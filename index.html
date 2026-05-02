@@ -6,12 +6,8 @@
   <style>
     body {
       margin: 0;
-      height: 100vh;
       overflow: hidden;
       background: #f7e9ff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       font-family: Arial;
     }
 
@@ -21,23 +17,36 @@
       height: 240px;
       background: white;
       border-radius: 10px;
-      position: relative;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       box-shadow: 0 15px 35px rgba(0,0,0,0.2);
       cursor: pointer;
-      z-index: 5;
-      transition: opacity 0.6s ease;
+      z-index: 20;
     }
 
-    .envelope::before {
-      content: "";
+    /* TOP FLAP (REAL OPENING EFFECT) */
+    .flap {
       position: absolute;
+      width: 0;
+      height: 0;
       border-left: 180px solid transparent;
       border-right: 180px solid transparent;
       border-top: 120px solid #e8d7ff;
       top: 0;
       left: 0;
+      transform-origin: top;
+      transition: transform 1s ease;
+      z-index: 25;
     }
 
+    /* open animation */
+    .open .flap {
+      transform: rotateX(180deg);
+    }
+
+    /* HEART */
     .heart {
       position: absolute;
       width: 50px;
@@ -46,6 +55,7 @@
       top: 95px;
       left: 155px;
       transform: rotate(45deg);
+      z-index: 30;
     }
 
     .heart::before,
@@ -61,38 +71,46 @@
     .heart::before { top: -25px; left: 0; }
     .heart::after { left: -25px; top: 0; }
 
-    /* 💌 LETTER */
+    /* 💥 EMOJIS */
+    .emoji {
+      position: fixed;
+      font-size: 60px;
+      opacity: 0;
+      transition: all 1.6s ease;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    /* ❤️ MESSAGE */
+    .message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 70px;
+      font-weight: bold;
+      color: white;
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 60;
+      text-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    /* 📄 LETTER */
     .letter {
       position: fixed;
       inset: 0;
       background: #fffafc;
       padding: 40px;
       opacity: 0;
-      transition: opacity 1s ease;
-      z-index: 1;
-    }
-
-    /* 💥 EMOJIS */
-    .emoji {
-      position: absolute;
-      font-size: 24px;
-      opacity: 0;
-      transform: translate(0,0) scale(0.3);
-      transition: all 1.8s ease;
+      transition: opacity 1.5s ease;
       z-index: 10;
     }
 
-    /* STATES */
-    .open .envelope {
-      opacity: 0;
-    }
-
-    .open .heart {
-      opacity: 0;
-    }
-
-    .open .letter {
-      opacity: 1;
+    /* FADE GROUP */
+    .fade-out {
+      opacity: 0 !important;
+      transition: opacity 1.2s ease !important;
     }
 
   </style>
@@ -100,69 +118,71 @@
 
 <body>
 
-<div id="container">
+<div class="envelope" onclick="start()">
+  <div class="flap"></div>
+  <div class="heart"></div>
+</div>
 
-  <div class="envelope" onclick="explode()">
-    <div class="heart"></div>
-  </div>
+<div class="message">I LOVE YOU ❤️</div>
 
-  <div class="letter">
-    <h1>My Love ❤️</h1>
-    <p>This is everything I want to tell you...</p>
-    <h3>100 Things I Love About You</h3>
-    <ul>
-      <li>Your smile</li>
-      <li>Your laugh</li>
-      <li>Your kindness</li>
-    </ul>
-  </div>
+<div class="letter">
+  <h1>My Love ❤️</h1>
+  <p>This is everything I want to tell you...</p>
 
+  <h3>100 Things I Love About You</h3>
+  <ul>
+    <li>Your smile</li>
+    <li>Your laugh</li>
+    <li>Your kindness</li>
+  </ul>
 </div>
 
 <script>
 const emojis = ["❤️","🫶","💐","🌹"];
-let exploded = false;
+let started = false;
 
-function explode() {
-  if (exploded) return;
-  exploded = true;
+function start() {
+  if (started) return;
+  started = true;
 
-  const container = document.getElementById("container");
+  const env = document.querySelector(".envelope");
+  env.classList.add("open");
 
-  container.classList.add("open");
-
-  // create 120 emojis
+  // create emojis
   for (let i = 0; i < 120; i++) {
-    const el = document.createElement("div");
-    el.className = "emoji";
-    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    const e = document.createElement("div");
+    e.className = "emoji";
+    e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
 
-    // start center (inside envelope)
-    el.style.left = "50%";
-    el.style.top = "50%";
+    document.body.appendChild(e);
 
-    document.body.appendChild(el);
-
-    // random explosion direction
-    const x = (Math.random() - 0.5) * 1200;
-    const y = (Math.random() - 0.5) * 800;
-    const scale = 1 + Math.random() * 3;
+    e.style.left = Math.random() * window.innerWidth + "px";
+    e.style.top = Math.random() * window.innerHeight + "px";
 
     setTimeout(() => {
-      el.style.opacity = "1";
-      el.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-    }, 50);
-
-    // fade out later
-    setTimeout(() => {
-      el.style.opacity = "0";
-    }, 1600);
+      e.style.opacity = "1";
+      e.style.transform = "scale(6)";
+    }, 300);
   }
 
-  // show letter after explosion
+  // show message
+  setTimeout(() => {
+    document.querySelector(".message").style.opacity = "1";
+  }, 600);
+
+  // FADE EVERYTHING TOGETHER
+  setTimeout(() => {
+    document.querySelectorAll(".emoji").forEach(e => {
+      e.classList.add("fade-out");
+    });
+
+    document.querySelector(".message").classList.add("fade-out");
+  }, 1800);
+
+  // reveal letter AFTER fade
   setTimeout(() => {
     document.querySelector(".letter").style.opacity = "1";
-  }, 1800);
+  }, 3000);
 }
 </script>
 
