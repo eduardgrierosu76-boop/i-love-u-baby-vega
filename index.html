@@ -29,7 +29,7 @@
     to { transform: translateY(-10vh); }
   }
 
-  /* ✉️ ENVELOPE */
+  /* ✉️ SINGLE ENVELOPE ONLY */
   .envelope {
     width: 80vw;
     max-width: 320px;
@@ -42,6 +42,7 @@
 
     cursor: pointer;
     z-index: 100;
+    perspective: 1000px;
   }
 
   .body {
@@ -53,7 +54,6 @@
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
   }
 
-  /* fold lines */
   .body::before {
     content: "";
     position: absolute;
@@ -62,10 +62,10 @@
     background:
       linear-gradient(to bottom right, transparent 49%, #ddd 50%, transparent 51%),
       linear-gradient(to bottom left, transparent 49%, #ddd 50%, transparent 51%);
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
-  /* 🔺 FLAP (REAL OPENING) */
+  /* 🔺 FLAP */
   .flap {
     position: absolute;
     width: 100%;
@@ -113,7 +113,7 @@
     z-index: 20;
     pointer-events: none;
     opacity: 0;
-    transition: transform 1.5s ease, opacity 2s ease;
+    transition: transform 1.5s ease, opacity 1.5s ease;
   }
 
   /* 📄 LETTER */
@@ -126,7 +126,6 @@
 
     opacity: 0;
     transform: scale(0.85);
-
     transition: all 1.2s ease;
 
     box-shadow: 0 30px 80px rgba(0,0,0,0.35);
@@ -163,7 +162,7 @@ for (let i = 0; i < 18; i++) {
 }
 </script>
 
-<!-- ✉️ ENVELOPE -->
+<!-- ✉️ ONLY ONE ENVELOPE -->
 <div class="envelope" onclick="start()">
   <div class="body"></div>
   <div class="flap"></div>
@@ -187,13 +186,12 @@ function start() {
   envelope.classList.add("open");
 
   const rect = envelope.getBoundingClientRect();
-
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
 
-  const emojis = ["❤️","💋","💖","💞","❤️"];
+  const emojis = ["❤️","💋","💖","💞"];
 
-  /* 💥 STEP 1: POUR OUT EMOJIS */
+  /* 💥 BURST FROM INSIDE */
   for (let i = 0; i < 80; i++) {
 
     const p = document.createElement("div");
@@ -202,7 +200,6 @@ function start() {
 
     document.body.appendChild(p);
 
-    /* start INSIDE envelope */
     p.style.left = cx + "px";
     p.style.top = cy + "px";
 
@@ -218,21 +215,20 @@ function start() {
     setTimeout(() => {
       p.style.opacity = "1";
       p.style.transform = `translate(${dx}px, ${dy}px) scale(1.6)`;
-    }, 100);
+    }, 80);
   }
 
-  /* 🌫️ STEP 2: FADE EMOJIS */
+  /* 🌫️ FADE */
   setTimeout(() => {
     document.querySelectorAll(".particle").forEach(p => {
       p.style.opacity = "0";
     });
   }, 2000);
 
-  /* 📄 STEP 3: SHOW LETTER */
+  /* 📄 LETTER */
   setTimeout(() => {
     document.body.classList.add("show");
   }, 3200);
-
 }
 
 </script>
