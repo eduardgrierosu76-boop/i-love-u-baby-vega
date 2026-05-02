@@ -11,37 +11,56 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: Arial;
       overflow: hidden;
+      font-family: Arial;
     }
 
-    /* 💌 ENVELOPE */
+    /* ✉️ ENVELOPE BASE */
     .envelope {
       width: 360px;
       height: 240px;
       background: white;
-      border-radius: 10px;
       position: relative;
+      border-radius: 10px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.2);
       cursor: pointer;
       z-index: 5;
-      transition: opacity 0.6s ease;
     }
 
-    /* envelope flap */
+    /* BOTTOM TRIANGLE */
     .envelope::before {
       content: "";
       position: absolute;
+      bottom: 0;
+      left: 0;
+      border-left: 180px solid transparent;
+      border-right: 180px solid transparent;
+      border-bottom: 120px solid #e8d7ff;
+      width: 0;
+      height: 0;
+    }
+
+    /* TOP FLAP */
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 0;
       height: 0;
       border-left: 180px solid transparent;
       border-right: 180px solid transparent;
       border-top: 120px solid #e8d7ff;
-      top: 0;
-      left: 0;
+      transform-origin: top;
+      transition: transform 0.8s ease;
+      z-index: 3;
     }
 
-    /* ❤️ HEART */
+    /* OPEN FLAP */
+    .open .flap {
+      transform: rotateX(180deg);
+    }
+
+    /* ❤️ HEART (CENTER) */
     .heart {
       position: absolute;
       width: 50px;
@@ -50,6 +69,8 @@
       top: 95px;
       left: 155px;
       transform: rotate(45deg);
+      z-index: 6;
+      transition: opacity 0.3s ease;
     }
 
     .heart::before,
@@ -65,49 +86,61 @@
     .heart::before { top: -25px; left: 0; }
     .heart::after { left: -25px; top: 0; }
 
-    /* 🌸 FLOWERS OVERLAY */
-    .flowers {
-      position: fixed;
-      inset: 0;
-      background: url("https://i.imgur.com/0Yb1G3Q.png"); /* simple flower pattern */
-      background-size: cover;
+    /* 🌸 EMOJI BURST */
+    .emoji {
+      position: absolute;
+      font-size: 28px;
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 1.5s ease;
       z-index: 10;
+      transition: all 1.2s ease;
     }
 
-    /* 💌 LETTER UNDER EVERYTHING */
+    .open .emoji {
+      opacity: 1;
+    }
+
+    /* spread animations */
+    .e1 { top: 90px; left: 150px; }
+    .e2 { top: 100px; left: 160px; }
+    .e3 { top: 95px; left: 145px; }
+    .e4 { top: 105px; left: 155px; }
+
+    .open .e1 { transform: translate(-120px, -200px); }
+    .open .e2 { transform: translate(140px, -180px); }
+    .open .e3 { transform: translate(-160px, 120px); }
+    .open .e4 { transform: translate(180px, 140px); }
+
+    /* 📄 LETTER */
     .letter {
       position: fixed;
-      inset: 0;
+      width: 210mm;
+      height: 297mm;
+      max-width: 90vw;
+      max-height: 90vh;
       background: #fffafc;
-      padding: 40px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 25px;
       box-sizing: border-box;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
       opacity: 0;
+      transition: opacity 1s ease;
       z-index: 1;
-      transition: opacity 1.5s ease;
     }
 
-    /* STATES */
-    .open .envelope {
+    /* FLOWERS/EMOJIS FADE OUT */
+    .show .emoji {
       opacity: 0;
     }
 
-    .open .heart {
-      opacity: 0;
-    }
-
-    .open .flowers {
+    .show .letter {
       opacity: 1;
     }
 
-    .show-letter .flowers {
+    .show .heart {
       opacity: 0;
-    }
-
-    .show-letter .letter {
-      opacity: 1;
     }
 
   </style>
@@ -118,15 +151,20 @@
 <div id="container">
 
   <div class="envelope" onclick="openScene()">
+    <div class="flap"></div>
     <div class="heart"></div>
-  </div>
 
-  <div class="flowers"></div>
+    <div class="emoji e1">❤️</div>
+    <div class="emoji e2">🫶</div>
+    <div class="emoji e3">💐</div>
+    <div class="emoji e4">🌹</div>
+  </div>
 
   <div class="letter">
     <h1>My Love ❤️</h1>
     <p>This is everything I want to tell you...</p>
-    <h3>100 Things I Love</h3>
+
+    <h3>100 Things I Love About You</h3>
     <ul>
       <li>Your smile</li>
       <li>Your laugh</li>
@@ -144,11 +182,12 @@ function openScene() {
 
   if (stage === 0) {
     c.classList.add("open");
-    stage = 1;
 
     setTimeout(() => {
-      c.classList.add("show-letter");
-    }, 2000);
+      c.classList.add("show");
+    }, 1200);
+
+    stage = 1;
   }
 }
 </script>
