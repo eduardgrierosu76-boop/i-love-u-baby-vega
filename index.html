@@ -17,72 +17,75 @@
       text-align: center;
     }
 
-    /* ENVELOPE */
+    /* OUTER ENVELOPE */
     .envelope {
       position: relative;
-      width: 320px;
-      height: 200px;
-      background: #ff6f91;
-      border-radius: 8px;
+      width: 340px;
+      height: 220px;
+      background: #fff; /* make envelope WHITE */
+      border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
       overflow: hidden;
     }
 
-    /* HEART (RED) */
+    /* BACK FLAP */
+    .flap {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 170px solid transparent;
+      border-right: 170px solid transparent;
+      border-top: 120px solid #ff6f91;
+      top: 0;
+      left: 0;
+      transform-origin: top;
+      transition: 0.6s;
+      z-index: 1;
+    }
+
+    /* HEART (ON TOP OF EVERYTHING) */
     .heart {
       position: absolute;
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       background: #e60026;
-      top: 80px;
-      left: 140px;
+      top: 85px;
+      left: 147px;
       transform: rotate(45deg);
-      z-index: 3;
+      z-index: 10; /* ALWAYS ON TOP */
+      transition: 0.4s;
     }
 
     .heart::before,
     .heart::after {
       content: "";
       position: absolute;
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       background: #e60026;
       border-radius: 50%;
     }
 
-    .heart::before { top: -20px; left: 0; }
-    .heart::after { left: -20px; top: 0; }
+    .heart::before { top: -22px; left: 0; }
+    .heart::after { left: -22px; top: 0; }
 
-    /* FLAP */
-    .flap {
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-left: 160px solid transparent;
-      border-right: 160px solid transparent;
-      border-top: 110px solid #ff4f73;
-      top: 0;
-      left: 0;
-      transform-origin: top;
-      transition: 0.6s;
-      z-index: 4;
-    }
-
-    /* PAPER (START INSIDE) */
+    /* PAPER (START SMALL INSIDE CENTER) */
     .paper {
       position: absolute;
-      width: 280px;
-      height: 380px;
+      width: 120px;
+      height: 140px;
       background: white;
-      left: 20px;
-      bottom: -380px;
-      transition: 0.8s ease;
-      padding: 15px;
-      box-sizing: border-box;
-      z-index: 2;
+      left: 110px;
+      top: 60px;
       border-radius: 5px;
-      overflow-y: auto;
+      padding: 10px;
+      box-sizing: border-box;
+      transition: 0.8s ease;
+      transform: scale(0.2);
+      transform-origin: center;
+      z-index: 2;
+      overflow: hidden;
     }
 
     /* STAGE 1 */
@@ -91,20 +94,29 @@
     }
 
     .stage1 .paper {
-      bottom: -150px; /* peek out */
+      transform: scale(0.6); /* grows slightly */
+      top: 20px;
     }
 
-    /* STAGE 2 (FULL OUT) */
+    /* STAGE 2 (FULL OPEN) */
     .stage2 .paper {
-      bottom: 220px; /* fully outside envelope */
+      transform: scale(1.4); /* FULL PAPER OUT */
+      top: -120px;
+    }
+
+    /* TEXT */
+    ul {
+      text-align: left;
+      padding-left: 15px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
     }
 
     .hint {
       margin-top: 15px;
-    }
-
-    ul {
-      text-align: left;
     }
   </style>
 </head>
@@ -113,23 +125,25 @@
 
 <div class="scene">
   <div class="envelope" id="env" onclick="openEnvelope()">
+
     <div class="flap"></div>
     <div class="heart"></div>
 
     <div class="paper">
       <h2>My Love ❤️</h2>
-      <p>This is everything I want you to know...</p>
+      <p>Everything I feel for you...</p>
 
-      <h3>100 Things I Love About You</h3>
+      <h3>100 Things I Love</h3>
       <ul>
         <li>Your smile</li>
         <li>Your laugh</li>
         <li>The way you care</li>
       </ul>
     </div>
+
   </div>
 
-  <p class="hint">Click once to open, click again to release 💌</p>
+  <p class="hint">Click once → open, click again → reveal 💌</p>
 </div>
 
 <script>
