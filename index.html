@@ -27,116 +27,51 @@ body {
   to { transform: translateY(-10vh); }
 }
 
-/* ✉️ CENTER ENVELOPE */
-.envelope {
-  width: 320px;
-  height: 200px;
-
+/* 💌 CENTER CARD (START STATE) */
+.card {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
-  cursor: pointer;
   z-index: 50;
+  text-align: center;
+  cursor: pointer;
 }
 
-/* 🧱 BODY */
-.body {
-  width: 100%;
-  height: 100%;
-  background: white;
-  border-radius: 8px;
-  position: absolute;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-  overflow: hidden;
-}
-
-/* ✉️ FLAP (REAL TOP TRIANGLE) */
-.flap {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: white;
-
-  clip-path: polygon(0 0, 100% 0, 50% 55%);
-  transform-origin: top;
-  transition: transform 1s ease;
-  z-index: 3;
-}
-
-.open .flap {
-  transform: rotateX(-180deg);
-}
-
-/* ✉️ CLEAN V LINES */
-.body::before,
-.body::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: transparent;
-}
-
-/* left diagonal \ */
-.body::before {
-  background: linear-gradient(135deg,
-    transparent 49%,
-    #d8c8d8 50%,
-    transparent 51%
-  );
-}
-
-/* right diagonal / */
-.body::after {
-  background: linear-gradient(225deg,
-    transparent 49%,
-    #d8c8d8 50%,
-    transparent 51%
-  );
-}
-
-/* ❤️ HEART */
-.center-heart {
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(45deg);
-  width: 45px;
-  height: 45px;
+/* 💖 PULSING HEART */
+.heart {
+  width: 60px;
+  height: 60px;
   background: #d1003f;
-  z-index: 5;
-  animation: pulse 1.2s infinite ease-in-out;
+  margin: 0 auto;
+  transform: rotate(45deg);
+  animation: pulse 1.2s infinite;
 }
 
-@keyframes pulse {
-  0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
-  50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.2); }
-  100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
-}
-
-.center-heart::before,
-.center-heart::after {
+.heart::before,
+.heart::after {
   content: "";
   position: absolute;
-  width: 45px;
-  height: 45px;
+  width: 60px;
+  height: 60px;
   background: #d1003f;
   border-radius: 50%;
 }
 
-.center-heart::before { top: -22px; left: 0; }
-.center-heart::after { left: -22px; top: 0; }
+.heart::before { top: -30px; left: 0; }
+.heart::after { left: -30px; top: 0; }
+
+@keyframes pulse {
+  0% { transform: rotate(45deg) scale(1); }
+  50% { transform: rotate(45deg) scale(1.2); }
+  100% { transform: rotate(45deg) scale(1); }
+}
 
 /* 📝 TEXT */
-.subtitle {
-  position: absolute;
-  top: 78%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.text {
+  margin-top: 20px;
   font-size: 14px;
   color: #7a4a6a;
-  z-index: 6;
 }
 
 /* 💥 EMOJIS */
@@ -176,29 +111,23 @@ body {
 
 <!-- 💗 BACKGROUND HEARTS -->
 <script>
-for (let i = 0; i < 18; i++) {
+for (let i = 0; i < 20; i++) {
   const h = document.createElement("div");
   h.className = "bg-heart";
   h.innerText = "❤️";
 
   h.style.left = Math.random() * 100 + "vw";
   h.style.animationDuration = (6 + Math.random() * 6) + "s";
-  h.style.fontSize = (16 + Math.random() * 18) + "px";
+  h.style.fontSize = (14 + Math.random() * 18) + "px";
 
   document.body.appendChild(h);
 }
 </script>
 
-<!-- ✉️ ENVELOPE -->
-<div class="envelope" onclick="start()">
-
-  <div class="body"></div>
-  <div class="flap"></div>
-
-  <div class="center-heart"></div>
-
-  <div class="subtitle">for someone special</div>
-
+<!-- 💌 MAIN CARD -->
+<div class="card" onclick="openCard()">
+  <div class="heart"></div>
+  <div class="text">for someone special</div>
 </div>
 
 <!-- 📄 LETTER -->
@@ -209,18 +138,18 @@ for (let i = 0; i < 18; i++) {
 
 <script>
 
-function start() {
+function openCard() {
 
-  const envelope = document.querySelector(".envelope");
-  envelope.classList.add("open");
+  const card = document.querySelector(".card");
 
-  const rect = envelope.getBoundingClientRect();
+  const rect = card.getBoundingClientRect();
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
 
-  const emojis = ["❤️","💋","💖","💞","💘"];
+  const emojis = ["❤️","💖","💘","💞","💋","💐"];
 
-  for (let i = 0; i < 100; i++) {
+  // 💥 EMOJI BURST (FULL SCREEN COVER)
+  for (let i = 0; i < 120; i++) {
 
     const p = document.createElement("div");
     p.className = "particle";
@@ -231,35 +160,37 @@ function start() {
     p.style.left = cx + "px";
     p.style.top = cy + "px";
 
-    const size = 140 + Math.random() * 260;
+    const size = 120 + Math.random() * 260;
     p.style.fontSize = size + "px";
 
     const angle = Math.random() * Math.PI * 2;
-    const dist = 400 + Math.random() * 900;
+    const dist = 500 + Math.random() * 1000;
 
     const dx = Math.cos(angle) * dist;
     const dy = Math.sin(angle) * dist;
 
     setTimeout(() => {
       p.style.opacity = "1";
-      p.style.transform = `translate(${dx}px, ${dy}px) scale(1.8)`;
-    }, 80);
+      p.style.transform = `translate(${dx}px, ${dy}px) scale(2)`;
+    }, 50);
   }
 
+  // 💌 hide main heart/text
   setTimeout(() => {
-    envelope.style.opacity = "0";
-  }, 800);
+    card.style.opacity = "0";
+  }, 300);
 
+  // 🌫 fade emojis
   setTimeout(() => {
     document.querySelectorAll(".particle").forEach(p => {
       p.style.opacity = "0";
     });
-  }, 2200);
+  }, 2000);
 
+  // 📄 show letter
   setTimeout(() => {
     document.body.classList.add("show");
-  }, 3200);
-
+  }, 3000);
 }
 
 </script>
