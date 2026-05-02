@@ -14,7 +14,7 @@
 
   audio { display: none; }
 
-  /* ✉️ ENVELOPE */
+  /* ✉️ ENVELOPE (CLICK SAFE) */
   .envelope {
     width: 80vw;
     max-width: 320px;
@@ -24,8 +24,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
     cursor: pointer;
-    z-index: 20;
+    z-index: 999; /* IMPORTANT FIX */
+
+    pointer-events: auto; /* IMPORTANT FIX */
   }
 
   .envelope-body {
@@ -89,7 +92,7 @@
     filter: drop-shadow(0 12px 18px rgba(0,0,0,0.25));
   }
 
-  /* 💌 LETTER (NOW ABOVE EVERYTHING) */
+  /* 💌 LETTER */
   .letter {
     position: fixed;
     inset: 10px;
@@ -105,12 +108,14 @@
 
     box-shadow: 0 30px 80px rgba(0,0,0,0.35);
 
-    z-index: 999; /* IMPORTANT FIX */
+    z-index: 999;
+    pointer-events: none;
   }
 
   .show-letter .letter {
     opacity: 1;
     transform: scale(1);
+    pointer-events: auto;
   }
 
   .message {
@@ -140,7 +145,8 @@
   <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1b5b1c3b1.mp3">
 </audio>
 
-<div class="envelope" onclick="start()">
+<!-- ✉️ CLICKABLE ENVELOPE -->
+<div class="envelope" id="envelope" onclick="start()">
   <div class="envelope-body"></div>
   <div class="flap"></div>
   <div class="heart"></div>
@@ -148,30 +154,30 @@
 
 <div class="message">I LOVE YOU ❤️</div>
 
-<!-- 💌 LETTER -->
 <div class="letter">
   <h2>My Love ❤️</h2>
   <p>This is everything I want to tell you...</p>
-  <p>💖 You mean everything to me.</p>
 </div>
 
 <script>
 
+let started = false;
+
 function start() {
+  if (started) return;
+  started = true;
 
   const music = document.getElementById("bgm");
   music.play().catch(()=>{});
 
-  document.querySelector(".envelope").classList.add("open");
+  document.getElementById("envelope").classList.add("open");
 
-  const rect = document.querySelector(".envelope").getBoundingClientRect();
+  const rect = document.getElementById("envelope").getBoundingClientRect();
 
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
 
-  const hearts = 45;
-
-  for (let i = 0; i < hearts; i++) {
+  for (let i = 0; i < 45; i++) {
 
     const p = document.createElement("div");
     p.className = "particle";
@@ -201,21 +207,15 @@ function start() {
     document.querySelector(".message").style.opacity = "1";
   }, 500);
 
-  /* 💥 IMPORTANT FIX: fade hearts BEFORE showing letter */
   setTimeout(() => {
-    document.querySelectorAll(".particle").forEach(p => {
-      p.classList.add("fade");
-    });
-
+    document.querySelectorAll(".particle").forEach(p => p.classList.add("fade"));
     document.querySelector(".message").classList.add("fade");
-    document.querySelector(".envelope").classList.add("fade");
+    document.getElementById("envelope").classList.add("fade");
   }, 1800);
 
-  /* 💌 SHOW LETTER AFTER HEARTS CLEAR */
   setTimeout(() => {
     document.body.classList.add("show-letter");
   }, 2800);
-
 }
 
 </script>
