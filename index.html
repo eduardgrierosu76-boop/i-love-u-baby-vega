@@ -24,7 +24,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     cursor: pointer;
     z-index: 20;
   }
@@ -80,13 +79,13 @@
   .heart::before { top: -22px; left: 0; }
   .heart::after { left: -22px; top: 0; }
 
-  /* ❤️ GIANT HEARTS */
+  /* ❤️ HEARTS */
   .particle {
     position: fixed;
     opacity: 0;
     z-index: 50;
     pointer-events: none;
-    transition: opacity 1.2s ease, transform 1.2s ease;
+    transition: opacity 1s ease, transform 1.6s ease;
     filter: drop-shadow(0 12px 18px rgba(0,0,0,0.25));
   }
 
@@ -137,7 +136,7 @@
 <body>
 
 <audio id="bgm" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1b5b1c3b1.mp3?filename=romantic-110727.mp3">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1b5b1c3b1.mp3">
 </audio>
 
 <div id="scene">
@@ -153,13 +152,6 @@
   <div class="letter">
     <h2>My Love ❤️</h2>
     <p>This is everything I want to tell you...</p>
-
-    <h3>100 Things I Love</h3>
-    <ul>
-      <li>Your smile</li>
-      <li>Your laugh</li>
-      <li>Your kindness</li>
-    </ul>
   </div>
 
 </div>
@@ -177,39 +169,45 @@ function start() {
 
   document.querySelector(".envelope").classList.add("open");
 
-  /* 💖 FEW BUT MASSIVE HEARTS THAT COVER EVERYTHING */
+  /* 💖 CONTROLLED HEART GRID (SMALL → BIG ANIMATION) */
 
-  const hearts = [
-    {x: 20, y: 20},
-    {x: 80, y: 20},
-    {x: 50, y: 50},
-    {x: 20, y: 80},
-    {x: 80, y: 80}
-  ];
+  const cols = 4;
+  const rows = 6;
 
-  for (let i = 0; i < hearts.length; i++) {
+  let index = 0;
 
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.innerText = "❤️";
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
 
-    document.body.appendChild(p);
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.innerText = "❤️";
 
-    // spread across screen
-    p.style.left = hearts[i].x + "vw";
-    p.style.top = hearts[i].y + "vh";
+      document.body.appendChild(p);
 
-    /* 🔥 EXTREME SIZE = NO WHITE SPACE POSSIBLE */
-    const size = 300 + Math.random() * 250; // 300–550px
-    p.style.fontSize = size + "px";
+      // spread evenly = NO EMPTY TOP/BOTTOM
+      const x = (c + 0.5) * (100 / cols);
+      const y = (r + 0.5) * (100 / rows);
 
-    // slight overlap scaling
-    const scale = 1.2 + Math.random() * 0.4;
+      p.style.left = x + "vw";
+      p.style.top = y + "vh";
 
-    setTimeout(() => {
-      p.style.opacity = "1";
-      p.style.transform = `scale(${scale})`;
-    }, 80);
+      // START SMALL
+      p.style.fontSize = "10px";
+      p.style.transform = "scale(0)";
+
+      // stagger animation
+      setTimeout(() => {
+        p.style.opacity = "1";
+
+        // GROW BIG SMOOTHLY
+        const size = 180 + Math.random() * 120;
+        p.style.fontSize = size + "px";
+        p.style.transform = "scale(1.2)";
+      }, index * 120);
+
+      index++;
+    }
   }
 
   setTimeout(() => {
@@ -223,7 +221,7 @@ function start() {
     document.querySelectorAll(".particle").forEach(p => {
       p.classList.add("fade");
     });
-  }, 1800);
+  }, 2000);
 
   setTimeout(() => {
     document.getElementById("scene").classList.add("show");
