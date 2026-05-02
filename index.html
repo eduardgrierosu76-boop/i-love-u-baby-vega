@@ -5,8 +5,8 @@
   <style>
     body {
       margin: 0;
-      background: #ffe4ec;
       height: 100vh;
+      background: #ffe4ec;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -17,41 +17,65 @@
       text-align: center;
     }
 
+    /* ENVELOPE BASE */
     .envelope {
-      width: 260px;
-      height: 160px;
-      background: #ff6f91;
       position: relative;
+      width: 300px;
+      height: 200px;
+      background: #ff6f91;
       cursor: pointer;
-      border-radius: 10px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      transition: transform 0.4s;
+      border-radius: 6px;
+      overflow: hidden;
     }
 
-    .envelope:hover {
-      transform: scale(1.05);
+    /* FLAP (TOP TRIANGLE) */
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-top: 100px solid #ff4f73;
+      transform-origin: top;
+      transition: transform 0.6s ease;
+      z-index: 3;
     }
 
+    /* LETTER */
     .letter {
       position: absolute;
       bottom: 0;
-      width: 220px;
-      left: 20px;
+      left: 10px;
+      width: 280px;
       height: 0;
       background: white;
       overflow: hidden;
       transition: 0.8s ease;
       border-radius: 5px;
-      padding: 0 10px;
+      padding: 0 15px;
+      box-sizing: border-box;
+      z-index: 1;
+    }
+
+    /* OPEN STATE */
+    .open .flap {
+      transform: rotateX(180deg);
     }
 
     .open .letter {
-      height: 300px;
+      height: 320px;
       padding: 15px;
     }
 
     ul {
       text-align: left;
+    }
+
+    .hint {
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -60,9 +84,11 @@
 
 <div class="container">
   <div class="envelope" onclick="openLetter(this)">
+    <div class="flap"></div>
+
     <div class="letter">
       <h2>My Love 💖</h2>
-      <p>This is for you...</p>
+      <p>This is everything I want you to know...</p>
 
       <h3>100 Things I Love About You</h3>
       <ul>
@@ -73,7 +99,7 @@
     </div>
   </div>
 
-  <p style="margin-top:20px;">Click the envelope 💌</p>
+  <p class="hint">Click the envelope 💌</p>
 </div>
 
 <script>
