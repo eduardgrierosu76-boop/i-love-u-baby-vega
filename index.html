@@ -14,13 +14,13 @@
 
   audio { display: none; }
 
-  /* 💗 BACKGROUND HEARTS */
+  /* 💗 BACKGROUND HEARTS (DO NOT BLOCK CLICKS) */
   .bg-heart {
     position: fixed;
     color: rgba(255, 0, 80, 0.25);
     font-size: 22px;
-    z-index: 1;
-    pointer-events: none;
+    z-index: 0;          /* FIX */
+    pointer-events: none; /* FIX */
     animation: floatUp linear infinite;
   }
 
@@ -29,7 +29,7 @@
     to { transform: translateY(-10vh); }
   }
 
-  /* ✉️ ENVELOPE WRAPPER (CLICK FIX) */
+  /* ✉️ ENVELOPE WRAPPER */
   .envelope {
     width: 80vw;
     max-width: 320px;
@@ -41,10 +41,11 @@
     transform: translate(-50%, -50%);
 
     cursor: pointer;
-    z-index: 100;
+    z-index: 50;
+    perspective: 1000px; /* FIX 3D ORIENTATION */
   }
 
-  /* 📩 ENVELOPE BODY */
+  /* 📩 BODY */
   .body {
     width: 100%;
     height: 100%;
@@ -54,7 +55,7 @@
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
   }
 
-  /* ✉️ FRONT LINES (ENVELOPE FOLD DESIGN) */
+  /* ✉️ FOLD LINES */
   .body::before {
     content: "";
     position: absolute;
@@ -63,10 +64,10 @@
     background:
       linear-gradient(135deg, transparent 49%, #ddd 50%, transparent 51%),
       linear-gradient(225deg, transparent 49%, #ddd 50%, transparent 51%);
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
-  /* 🔺 FLAP */
+  /* 🔺 FLAP (FIXED ORIENTATION) */
   .flap {
     position: absolute;
     width: 100%;
@@ -74,15 +75,20 @@
     background: white;
     clip-path: polygon(0 0, 100% 0, 50% 55%);
     transform-origin: top;
-    transition: transform 1.5s ease;
+
+    transform: rotateX(0deg); /* FIX START STATE */
+
+    transition: transform 1.2s ease;
     z-index: 3;
+
+    backface-visibility: hidden;
   }
 
   .open .flap {
-    transform: rotateX(180deg);
+    transform: rotateX(-180deg); /* FIX UPSIDE DOWN ISSUE */
   }
 
-  /* ❤️ CENTER HEART */
+  /* ❤️ HEART */
   .center-heart {
     position: absolute;
     top: 55%;
@@ -107,14 +113,13 @@
   .center-heart::before { top: -22px; left: 0; }
   .center-heart::after { left: -22px; top: 0; }
 
-  /* 💥 BURST */
+  /* 💥 PARTICLES */
   .particle {
     position: fixed;
-    z-index: 40;
+    z-index: 20;
     pointer-events: none;
     opacity: 0;
-    transition: transform 1.5s ease, opacity 1.5s ease;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.25));
+    transition: transform 1.4s ease, opacity 1.4s ease;
   }
 
   /* 📄 LETTER */
@@ -124,7 +129,6 @@
     background: #fffafc;
     border-radius: 14px;
     padding: 20px;
-    box-sizing: border-box;
 
     opacity: 0;
     transform: scale(0.85);
@@ -132,11 +136,13 @@
 
     box-shadow: 0 30px 80px rgba(0,0,0,0.35);
     z-index: 999;
+    pointer-events: none;
   }
 
   .show .letter {
     opacity: 1;
     transform: scale(1);
+    pointer-events: auto;
   }
 
 </style>
@@ -201,7 +207,7 @@ function start() {
     p.style.left = cx + "px";
     p.style.top = cy + "px";
 
-    const size = 130 + Math.random() * 200;
+    const size = 140 + Math.random() * 200;
     p.style.fontSize = size + "px";
 
     const angle = Math.random() * Math.PI * 2;
@@ -213,7 +219,7 @@ function start() {
     setTimeout(() => {
       p.style.opacity = "1";
       p.style.transform = `translate(${dx}px, ${dy}px) scale(1.5)`;
-    }, 80);
+    }, 60);
   }
 
   setTimeout(() => {
