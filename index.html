@@ -47,7 +47,6 @@ body {
   cursor: pointer;
 }
 
-/* 🧱 BASE */
 .base {
   position: absolute;
   width: 100%;
@@ -58,7 +57,6 @@ body {
   z-index: 1;
 }
 
-/* 🧩 INNER FILL */
 .inner-fill {
   position: absolute;
   width: 100%;
@@ -68,21 +66,16 @@ body {
   z-index: 2;
 }
 
-/* 🔺 FLAP */
 .flap {
   position: absolute;
   top: 0;
   width: 100%;
   height: 65%;
-
   background: linear-gradient(to bottom, #fff, #f2f2f2);
   clip-path: polygon(0 0, 100% 0, 50% 100%);
-
   transform-origin: top;
   transition: transform 1s ease;
-
   z-index: 3;
-
   box-shadow: 0 6px 10px rgba(0,0,0,0.12);
 }
 
@@ -90,7 +83,6 @@ body {
   transform: rotateX(-165deg);
 }
 
-/* ❤️ HEART */
 .heart {
   position: absolute;
   top: 55%;
@@ -122,7 +114,6 @@ body {
   100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
 }
 
-/* 📝 TEXT */
 .text {
   position: absolute;
   bottom: 18px;
@@ -133,7 +124,6 @@ body {
   z-index: 6;
 }
 
-/* 💥 EMOJIS */
 .particle {
   position: fixed;
   z-index: 9999;
@@ -142,7 +132,6 @@ body {
   transition: transform 1.6s ease, opacity 2s ease;
 }
 
-/* 📄 LETTER */
 .letter {
   position: fixed;
   inset: 12px;
@@ -152,14 +141,12 @@ body {
 
   opacity: 0;
   transform: scale(0.85);
-
   transition: 1.2s ease;
 
   z-index: 100000;
   pointer-events: none;
 
   overflow-y: auto;
-
   box-shadow: 0 30px 80px rgba(0,0,0,0.25);
 }
 
@@ -179,146 +166,39 @@ body {
 
 <div class="scene">
 
-<!-- 💗 BACKGROUND HEARTS -->
 <script>
 for (let i = 0; i < 18; i++) {
   const h = document.createElement("div");
   h.className = "bg-heart";
   h.innerText = "❤️";
-
   h.style.left = Math.random() * 100 + "vw";
   h.style.animationDuration = (6 + Math.random() * 6) + "s";
   h.style.fontSize = (14 + Math.random() * 18) + "px";
-
   document.body.appendChild(h);
 }
 </script>
 
-<!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="openEnvelope()">
-
   <div class="base"></div>
   <div class="inner-fill"></div>
   <div class="flap"></div>
-
   <div class="heart"></div>
   <div class="text">for someone special</div>
-
 </div>
 
-<!-- 📄 LETTER -->
 <div class="letter">
 
   <h2>something you need to know:</h2>
-
-  <p>Hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero una cosa que sé con seguridad es que te amo y que, sin importar cómo se vea mi futuro, quiero que sea contigo.</p>
 
   <p>Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.</p>
 
   <p>Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.</p>
 
-  <p>He estado perdido por un tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo, y sin importar cómo se vea mi futuro, quiero que sea contigo.</p>
+  <p>He estado perdido por un tiempo y hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo, y sin importar cómo se vea mi futuro, quiero que sea contigo.</p>
 
   <p>Y tal vez no lo demuestre lo suficiente, pero me importas, y siempre voy a estar aquí para ti. Cuando solo veas oscuridad, voy a estar aquí para mostrarte la luz.</p>
 
   <p>Eres perfecta, mi amor. Sueño contigo cada noche. Si Dios creó la perfección, eres tú.</p>
-
-  <p><b>Y aquí tienes 100 cosas que amo de ti:</b></p>
-
-  <p>
-    Amo cada vez que te ríes<br>
-    Amo cada vez que sonríes<br>
-    Amo tus grandes y hermosos ojos<br>
-    Amo tus labios<br>
-    Amo tu voz<br>
-    Amo cuando hablas en español<br>
-    Amo lo suave que eres<br>
-    Amo lo honesta que eres<br>
-    Amo cómo bromeas conmigo<br>
-    Amo cómo me haces bromas<br>
-    Amo cómo me escribes cada mañana<br>
-    Amo cuando me llamas baby<br>
-    Amo cuando dices que me amas<br>
-    Amo lo inteligente que eres<br>
-    Amo cómo siempre intentas hacerme una mejor persona<br>
-    Amo cada vez que intentas consolarme<br>
-    Amo cómo me entiendes<br>
-    Amo cuando te abres conmigo<br>
-    Amo cuando estás emocionada<br>
-    Amo cuando estás tranquila<br>
-    Amo cuando tienes sueño<br>
-    Amo cuando me cuentas tu día<br>
-    Amo que hayas llegado a mi vida<br>
-    Amo cómo te acuerdas de mí<br>
-    Amo la forma en que me respondes<br>
-    Amo cómo eres tú misma conmigo<br>
-    Amo la forma en que me animas<br>
-    Amo lo determinada que eres<br>
-    Amo cómo crees en mí<br>
-    Amo cada vez que dices “noooooo”<br>
-    Amo tu cara<br>
-    Amo tu cuerpo<br>
-    Amo los TikToks que me mandas<br>
-    Amo las fotos que me das<br>
-    Amo los videos que me das<br>
-    Amo los chistes que haces<br>
-    Amo que te rías de mis chistes<br>
-    Amo que pueda hablar contigo de todo<br>
-    Amo que pueda ser honesto contigo<br>
-    Amo que pueda abrirme contigo<br>
-    Amo cómo reaccionas a mis cumplidos<br>
-    Amo cómo haces mi día mejor<br>
-    Amo cómo todo desaparece cuando hablo contigo<br>
-    Amo cómo me haces sentir tranquilo<br>
-    Amo cómo me haces sentir amado<br>
-    Amo cómo me haces reír<br>
-    Amo cómo me hiciste sentir especial<br>
-    Amo que existas en mi vida<br>
-    Amo tu forma de ser tú<br>
-    Amo cómo empezamos cada conversación<br>
-    Amo cada llamada que hacemos<br>
-    Amo cada mensaje que nos mandamos<br>
-    Amo cada foto que compartimos<br>
-    Amo lo cariñosa que eres<br>
-    Amo cómo cuidas a tus hermanos<br>
-    Amo que sepas cocinar<br>
-    Amo lo productiva que eres cada día<br>
-    Amo lo especial que me haces sentir<br>
-    Amo lo especial que eres<br>
-    Amo tu cabello<br>
-    Amo tu nariz<br>
-    Amo tus mejillas<br>
-    Amo lo alta que eres<br>
-    Amo tus piernas<br>
-    Amo tu corazón<br>
-    Amo el color de tus ojos<br>
-    Amo cómo manejas el estrés<br>
-    Amo tu sonrisa ladeada<br>
-    Amo cada expresión tuya<br>
-    Amo cuando estás pensando mucho<br>
-    Amo tu postura<br>
-    Amo tu ropa<br>
-    Amo la forma en que reaccionas a las cosas<br>
-    Amo cuando cambia tu ánimo<br>
-    Amo que seas de Bolivia<br>
-    Amo cuando hablas inglés<br>
-    Amo tu acento<br>
-    Amo lo buena persona que eres<br>
-    Amo tu gusto musical<br>
-    Amo tu gusto por la comida<br>
-    Amo tu gusto por los libros<br>
-    Amo tus hobbies<br>
-    Amo tu gusto por películas<br>
-    Amo tu gusto por series<br>
-    Amo lo pura que eres<br>
-    Amo lo inocente que eres<br>
-    Amo lo traviesa que eres<br>
-    Amo cada momento que pasamos hablando<br>
-    Amo cada juego que hemos jugado<br>
-    Amo cada momento entre nosotros<br>
-    Amo cada momento que nos espera<br>
-    Amo que seas mía
-  </p>
 
   <p><b>Te amo Briana, y no puedo esperar para demostrarte cuánto te amo a través de mis acciones.</b></p>
 
@@ -340,13 +220,10 @@ function openEnvelope() {
   const emojis = ["❤️","💖","💘","💞","💋","💐"];
 
   setTimeout(() => {
-
     for (let i = 0; i < 120; i++) {
-
       const p = document.createElement("div");
       p.className = "particle";
       p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-
       document.body.appendChild(p);
 
       p.style.left = cx + "px";
@@ -366,7 +243,6 @@ function openEnvelope() {
         p.style.transform = `translate(${dx}px, ${dy}px) scale(2)`;
       }, 50);
     }
-
   }, 900);
 
   setTimeout(() => {
