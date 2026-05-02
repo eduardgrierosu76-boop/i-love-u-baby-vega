@@ -51,7 +51,7 @@
     }
   }
 
-  /* 🧱 BODY */
+  /* 🧱 BODY (REAL ENVELOPE LOOK) */
   .body {
     width: 100%;
     height: 100%;
@@ -59,10 +59,30 @@
     border-radius: 10px;
     position: absolute;
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    overflow: hidden;
+  }
 
-    background-image:
-      linear-gradient(135deg, transparent 49%, #ddd 50%, transparent 51%),
-      linear-gradient(225deg, transparent 49%, #ddd 50%, transparent 51%);
+  /* ✉️ PROPER FOLD LINES (top-left → center, top-right → center) */
+  .body::before,
+  .body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    border-top: 2px solid #d8c8d8;
+  }
+
+  .body::before {
+    left: 0;
+    transform: rotate(35deg);
+    transform-origin: top right;
+  }
+
+  .body::after {
+    right: 0;
+    transform: rotate(-35deg);
+    transform-origin: top left;
   }
 
   /* 🔺 FLAP */
@@ -81,23 +101,6 @@
     transform: rotateX(-180deg);
   }
 
-  /* ✉️ TOP SEAL LINES (NEW) */
-  .seal-line {
-    position: absolute;
-    width: 70%;
-    height: 2px;
-    background: #d8c8d8;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-  }
-
-  .seal-line:nth-child(2) {
-    top: 22px;
-    width: 50%;
-  }
-
   /* ❤️ HEART */
   .center-heart {
     position: absolute;
@@ -108,7 +111,6 @@
     height: 45px;
     background: #d1003f;
     z-index: 5;
-
     animation: pulse 1.2s infinite ease-in-out;
   }
 
@@ -131,10 +133,10 @@
   .center-heart::before { top: -22px; left: 0; }
   .center-heart::after { left: -22px; top: 0; }
 
-  /* 📝 TEXT (LOWERED MORE) */
+  /* 📝 TEXT INSIDE ENVELOPE */
   .subtitle {
     position: absolute;
-    top: 86%;   /* LOWER than before */
+    top: 86%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 14px;
@@ -196,10 +198,6 @@ for (let i = 0; i < 18; i++) {
 <!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="start()">
 
-  <!-- top seal lines -->
-  <div class="seal-line"></div>
-  <div class="seal-line"></div>
-
   <div class="body"></div>
   <div class="flap"></div>
 
@@ -228,12 +226,11 @@ function start() {
 
   const emojis = ["❤️","💋","💖","💞","💘"];
 
-  /* 💥 EMOJIS BURST */
   for (let i = 0; i < 100; i++) {
 
     const p = document.createElement("div");
     p.className = "particle";
-    p.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+    p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
 
     document.body.appendChild(p);
 
@@ -255,19 +252,16 @@ function start() {
     }, 80);
   }
 
-  /* 💌 hide envelope */
   setTimeout(() => {
     envelope.style.opacity = "0";
-  }, 900);
+  }, 800);
 
-  /* 🌫 fade emojis */
   setTimeout(() => {
     document.querySelectorAll(".particle").forEach(p => {
       p.style.opacity = "0";
     });
   }, 2200);
 
-  /* 📄 show letter */
   setTimeout(() => {
     document.body.classList.add("show");
   }, 3200);
