@@ -1,19 +1,245 @@
-for (let i = 0; i < 70; i++) {  // reduced from 120–140
-  const e = document.createElement("div");
-  e.className = "emoji";
-  e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
 
-  document.body.appendChild(e);
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #f7e9ff;
+    font-family: Arial;
+  }
 
-  // more spaced + elegant distribution
-  const x = Math.random() * window.innerWidth;
-  const y = Math.random() * window.innerHeight;
+  /* 🎵 MUSIC */
+  audio {
+    display: none;
+  }
 
-  e.style.left = x + "px";
-  e.style.top = y + "px";
+  /* ✉️ ENVELOPE */
+  .envelope {
+    width: 80vw;
+    max-width: 320px;
+    height: 200px;
 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    cursor: pointer;
+    z-index: 20;
+  }
+
+  .envelope-body {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 12px;
+
+    box-shadow:
+      0 20px 40px rgba(0,0,0,0.25),
+      inset 0 -8px 20px rgba(0,0,0,0.08);
+
+    position: absolute;
+  }
+
+  .flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 0;
+    height: 0;
+
+    border-left: 160px solid transparent;
+    border-right: 160px solid transparent;
+    border-top: 110px solid #e8d7ff;
+
+    transform-origin: top;
+    transition: transform 1s ease;
+    z-index: 3;
+  }
+
+  .open .flap {
+    transform: rotateX(180deg);
+  }
+
+  .heart {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background: #d1003f;
+
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+
+    z-index: 5;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background: #d1003f;
+    border-radius: 50%;
+  }
+
+  .heart::before { top: -22px; left: 0; }
+  .heart::after { left: -22px; top: 0; }
+
+  /* 💥 EMOJIS */
+  .emoji {
+    position: fixed;
+    font-size: 50px;
+    opacity: 0;
+    transition: all 2s ease;
+    pointer-events: none;
+    z-index: 50;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.15));
+  }
+
+  /* ❤️ MESSAGE */
+  .message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    opacity: 0;
+    text-align: center;
+    z-index: 60;
+    text-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  /* 📄 LETTER (MOBILE A4) */
+  .letter {
+    position: fixed;
+    inset: 12px;
+
+    background: #fffafc;
+    border-radius: 14px;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    overflow-y: auto;
+
+    opacity: 0;
+    transform: scale(0.95);
+
+    transition: all 1.5s ease;
+
+    box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+
+    z-index: 10;
+  }
+
+  .show .letter {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .fade {
+    opacity: 0 !important;
+    transition: opacity 1.2s ease !important;
+  }
+
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 ROMANTIC MUSIC -->
+<audio id="bgm" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1b5b1c3b1.mp3?filename=romantic-110727.mp3" type="audio/mp3">
+</audio>
+
+<div id="scene">
+
+  <div class="envelope" onclick="start()">
+    <div class="envelope-body"></div>
+    <div class="flap"></div>
+    <div class="heart"></div>
+  </div>
+
+  <div class="message">I LOVE YOU ❤️</div>
+
+  <div class="letter">
+    <h2>My Love ❤️</h2>
+    <p>This is everything I want to tell you...</p>
+
+    <h3>100 Things I Love About You</h3>
+    <ul>
+      <li>Your smile</li>
+      <li>Your laugh</li>
+      <li>Your kindness</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+
+const emojis = ["❤️","🫶","💐","🌹"];
+let started = false;
+
+function start() {
+  if (started) return;
+  started = true;
+
+  // 🎵 start music
+  document.getElementById("bgm").play();
+
+  const envelope = document.querySelector(".envelope");
+  envelope.classList.add("open");
+
+  // 💥 softer emoji burst (reduced + elegant)
+  for (let i = 0; i < 70; i++) {
+    const e = document.createElement("div");
+    e.className = "emoji";
+    e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+
+    document.body.appendChild(e);
+
+    e.style.left = Math.random() * window.innerWidth + "px";
+    e.style.top = Math.random() * window.innerHeight + "px";
+
+    setTimeout(() => {
+      e.style.opacity = "1";
+      e.style.transform = "scale(4.5)";
+    }, 120);
+  }
+
+  // ❤️ message
   setTimeout(() => {
-    e.style.opacity = "1";
-    e.style.transform = "scale(4.5)"; // slightly smaller = more romantic feel
-  }, 120);
+    document.querySelector(".message").style.opacity = "1";
+  }, 500);
+
+  // fade everything together
+  setTimeout(() => {
+    document.querySelector(".envelope").classList.add("fade");
+    document.querySelector(".message").classList.add("fade");
+
+    document.querySelectorAll(".emoji").forEach(e => {
+      e.classList.add("fade");
+    });
+  }, 1800);
+
+  // reveal letter
+  setTimeout(() => {
+    document.getElementById("scene").classList.add("show");
+  }, 3200);
 }
+
+</script>
+
+</body>
+</html>
