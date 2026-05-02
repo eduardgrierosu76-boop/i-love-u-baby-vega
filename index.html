@@ -15,58 +15,41 @@
       overflow: hidden;
     }
 
-    /* 🌸 BACKGROUND HEARTS (VISIBLE + SIMPLE) */
-    .heart-bg {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      background: #ff4f7b;
-      transform: rotate(45deg);
-      opacity: 0.2;
-      animation: float 6s infinite ease-in-out;
-    }
-
-    .heart-bg::before,
-    .heart-bg::after {
-      content: "";
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      background: #ff4f7b;
-      border-radius: 50%;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0) rotate(45deg); }
-      50% { transform: translateY(-20px) rotate(45deg); }
-      100% { transform: translateY(0) rotate(45deg); }
-    }
-
-    .h1 { top: 10%; left: 15%; }
-    .h2 { top: 70%; left: 80%; width: 40px; height: 40px; }
-    .h3 { top: 30%; left: 75%; width: 50px; height: 50px; }
-
-    /* ENVELOPE */
+    /* 💌 ENVELOPE */
     .envelope {
       width: 360px;
       height: 240px;
       background: white;
-      border-radius: 12px;
+      border-radius: 10px;
       position: relative;
       box-shadow: 0 15px 35px rgba(0,0,0,0.2);
       cursor: pointer;
-      z-index: 2;
+      z-index: 5;
+      transition: opacity 0.6s ease;
     }
 
+    /* envelope flap */
+    .envelope::before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 180px solid transparent;
+      border-right: 180px solid transparent;
+      border-top: 120px solid #e8d7ff;
+      top: 0;
+      left: 0;
+    }
+
+    /* ❤️ HEART */
     .heart {
       position: absolute;
       width: 50px;
       height: 50px;
-      background: red;
+      background: #d1003f;
       top: 95px;
       left: 155px;
       transform: rotate(45deg);
-      z-index: 5;
     }
 
     .heart::before,
@@ -75,45 +58,56 @@
       position: absolute;
       width: 50px;
       height: 50px;
-      background: red;
+      background: #d1003f;
       border-radius: 50%;
     }
 
     .heart::before { top: -25px; left: 0; }
     .heart::after { left: -25px; top: 0; }
 
-    /* PAPER (A4 REAL SIZE FEEL) */
-    .paper {
+    /* 🌸 FLOWERS OVERLAY */
+    .flowers {
       position: fixed;
-      width: 210mm;
-      height: 297mm;
-      max-width: 90vw;
-      max-height: 90vh;
-
-      background: #fffafc;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-
-      transition: 0.8s ease;
+      inset: 0;
+      background: url("https://i.imgur.com/0Yb1G3Q.png"); /* simple flower pattern */
+      background-size: cover;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
       z-index: 10;
     }
 
-    .open .paper {
-      transform: translate(-50%, -50%) scale(1);
+    /* 💌 LETTER UNDER EVERYTHING */
+    .letter {
+      position: fixed;
+      inset: 0;
+      background: #fffafc;
+      padding: 40px;
+      box-sizing: border-box;
+      opacity: 0;
+      z-index: 1;
+      transition: opacity 1.5s ease;
     }
 
+    /* STATES */
     .open .envelope {
       opacity: 0;
-      transform: scale(0.8);
     }
 
     .open .heart {
       opacity: 0;
+    }
+
+    .open .flowers {
+      opacity: 1;
+    }
+
+    .show-letter .flowers {
+      opacity: 0;
+    }
+
+    .show-letter .letter {
+      opacity: 1;
     }
 
   </style>
@@ -121,21 +115,17 @@
 
 <body>
 
-<!-- 🌸 hearts -->
-<div class="heart-bg h1"></div>
-<div class="heart-bg h2"></div>
-<div class="heart-bg h3"></div>
-
 <div id="container">
 
-  <div class="envelope" onclick="openLetter()">
+  <div class="envelope" onclick="openScene()">
     <div class="heart"></div>
   </div>
 
-  <div class="paper">
-    <h2>My Love ❤️</h2>
-    <p>This is everything I want to say to you...</p>
+  <div class="flowers"></div>
 
+  <div class="letter">
+    <h1>My Love ❤️</h1>
+    <p>This is everything I want to tell you...</p>
     <h3>100 Things I Love</h3>
     <ul>
       <li>Your smile</li>
@@ -147,8 +137,19 @@
 </div>
 
 <script>
-function openLetter() {
-  document.getElementById("container").classList.add("open");
+let stage = 0;
+
+function openScene() {
+  const c = document.getElementById("container");
+
+  if (stage === 0) {
+    c.classList.add("open");
+    stage = 1;
+
+    setTimeout(() => {
+      c.classList.add("show-letter");
+    }, 2000);
+  }
 }
 </script>
 
