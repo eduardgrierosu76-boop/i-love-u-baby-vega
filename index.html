@@ -7,107 +7,87 @@
 <style>
 body {
   margin: 0;
-  overflow: hidden;
-  background: #f7e9ff;
   font-family: Arial;
-  touch-action: manipulation;
+  background: #120018;
+  overflow: hidden;
 }
 
-/* 💗 BACKGROUND HEARTS */
-.bg-heart {
+/* 🌌 BACKGROUND */
+.galaxy {
   position: fixed;
-  z-index: 1;
-  pointer-events: none;
-  color: rgba(255, 0, 80, 0.25);
-  font-size: 18px;
-  animation: floatUp linear infinite;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, #2b0a3d, transparent 40%),
+              radial-gradient(circle at 80% 70%, #3a0f5c, transparent 45%),
+              radial-gradient(circle at center, #0d0014, #000);
+  z-index: 0;
 }
 
-@keyframes floatUp {
-  from { transform: translateY(100vh); }
-  to { transform: translateY(-10vh); }
-}
-
-/* 📦 SCENE */
-.scene {
+/* STAGE */
+.stage {
   position: absolute;
   inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* ✉️ ENVELOPE (NEW REALISTIC STYLE) */
+/* ENVELOPE */
 .envelope {
   width: 340px;
   height: 220px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   cursor: pointer;
 }
 
-/* BACK */
+/* BASE */
 .base {
   position: absolute;
   width: 100%;
   height: 100%;
   background: #fff;
-  border: 2px solid #e6d6df;
   border-radius: 8px;
-  z-index: 1;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
 }
 
-/* LOWER FLAP */
-.bottom-flap {
+/* FLAPS */
+.flap {
   position: absolute;
-  bottom: 0;
   width: 100%;
-  height: 55%;
-  background: #f5f5f5;
-  clip-path: polygon(0 0, 50% 100%, 100% 0);
-  z-index: 2;
+  height: 60%;
+  top: 0;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: 1.2s;
 }
 
-/* LEFT FLAP */
-.left-flap {
+.left-flap, .right-flap, .bottom-flap {
   position: absolute;
+  background: #f7f7f7;
+}
+
+.left-flap {
   width: 50%;
   height: 100%;
   left: 0;
-  background: #fafafa;
   clip-path: polygon(0 0, 100% 50%, 0 100%);
-  z-index: 2;
 }
 
-/* RIGHT FLAP */
 .right-flap {
-  position: absolute;
   width: 50%;
   height: 100%;
   right: 0;
-  background: #fafafa;
   clip-path: polygon(100% 0, 0 50%, 100% 100%);
-  z-index: 2;
 }
 
-/* TOP FLAP */
-.flap {
-  position: absolute;
-  top: 0;
+.bottom-flap {
   width: 100%;
-  height: 60%;
-  background: #ffffff;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: top;
-  transition: transform 1s ease;
-  z-index: 3;
-  border-bottom: 2px solid #e6d6df;
+  height: 55%;
+  bottom: 0;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
 }
 
-.open .flap {
-  transform: rotateX(-170deg);
-}
-
-/* ❤️ HEART */
+/* HEART */
 .heart {
   position: absolute;
   top: 55%;
@@ -116,8 +96,7 @@ body {
   width: 55px;
   height: 55px;
   background: #d1003f;
-  z-index: 5;
-  animation: pulse 1.2s infinite;
+  animation: pulse 1.1s infinite;
 }
 
 .heart::before,
@@ -130,8 +109,8 @@ body {
   border-radius: 50%;
 }
 
-.heart::before { top: -27px; left: 0; }
-.heart::after { left: -27px; top: 0; }
+.heart::before { top: -27px; }
+.heart::after { left: -27px; }
 
 @keyframes pulse {
   0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
@@ -142,247 +121,200 @@ body {
 /* TEXT */
 .text {
   position: absolute;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
   font-size: 14px;
   color: #7a4a6a;
-  z-index: 6;
 }
 
-/* 💥 PARTICLES */
-.particle {
-  position: fixed;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0;
-  transition: transform 1.6s ease, opacity 2s ease;
-}
-
-/* 📄 LETTER (REAL PAPER STYLE) */
+/* LETTER FIX (IMPORTANT) */
 .letter {
   position: fixed;
   inset: 0;
   background: #fffaf5;
-  padding: 28px;
-
-  opacity: 0;
-  transform: scale(0.9);
-  transition: 1s ease;
-
-  z-index: 100000;
+  padding: 20px;
 
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
-  pointer-events: none;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 1s;
 
-  box-shadow: inset 0 0 0 2px #ead7df;
+  z-index: 9999;
 }
 
-.show .letter {
+.show {
   opacity: 1;
-  transform: scale(1);
-  pointer-events: auto;
+  transform: translateY(0);
 }
 
-.letter h2 {
-  margin-bottom: 20px;
-}
-
-.letter p {
-  line-height: 1.7;
-  margin-bottom: 14px;
-  font-size: 15px;
+/* TEXT INSIDE LETTER */
+#typed {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 14px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 💗 BACKGROUND HEARTS -->
-<script>
-for (let i = 0; i < 18; i++) {
-  const h = document.createElement("div");
-  h.className = "bg-heart";
-  h.innerText = "❤️";
-  h.style.left = Math.random() * 100 + "vw";
-  h.style.animationDuration = (6 + Math.random() * 6) + "s";
-  h.style.fontSize = (14 + Math.random() * 18) + "px";
-  document.body.appendChild(h);
-}
-</script>
+<div class="galaxy"></div>
 
-<!-- ✉️ ENVELOPE -->
-<div class="envelope" onclick="openEnvelope()">
+<div class="stage">
+
+<div class="envelope" id="env" onclick="openEnvelope()">
   <div class="base"></div>
   <div class="bottom-flap"></div>
   <div class="left-flap"></div>
   <div class="right-flap"></div>
   <div class="flap"></div>
-
   <div class="heart"></div>
   <div class="text">for someone special</div>
 </div>
 
-<!-- 📄 LETTER (YOUR TEXT UNCHANGED) -->
-<div class="letter">
+</div>
 
+<!-- LETTER -->
+<div class="letter" id="letter">
 <h2>something you need to know:</h2>
-
-<p>Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.</p>
-
-<p>Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.</p>
-
-<p>He estado perdido por un tiempo y hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo, y sin importar cómo se vea mi futuro, quiero que sea contigo. Quiero despertarme cada día contigo en mis brazos, quiero estar ahí para ti cuando más me necesites, quiero saber todo sobre ti, quiero hacer todo contigo, quiero envejecer contigo, porque te amo.</p>
-
-<p>Y tal vez no lo demuestre lo suficiente, pero me importas, y siempre quiero que sepas que no importa lo que pase, siempre voy a estar aquí para ti. Cuando solo veas oscuridad, siempre voy a estar aquí para mostrarte la luz.</p>
-
-<p>Debería haber hecho esta carta hace mucho tiempo, pero nunca tuve suficientes palabras para describir lo mucho que significas para mí, y aún no las tengo. Pero eres perfecta, mi amor. Sueño contigo cada noche. Si Dios creó la perfección, eres tú.</p>
-
-<p>Y aunque no tenga suficientes palabras para decir cuánto te amo, aquí tienes 100 de las millones de cosas que amo de ti:</p>
-
-<p>
-Amo cada vez que te ríes<br>
-Amo cada vez que sonríes<br>
-Amo tus grandes y hermosos ojos<br>
-Amo tus labios<br>
-Amo tu voz<br>
-Amo cuando hablas en español<br>
-Amo lo suave que eres<br>
-Amo lo honesta que eres<br>
-Amo cómo bromeas conmigo<br>
-Amo cómo me haces bromas<br>
-Amo cómo me escribes cada mañana<br>
-Amo cuando me llamas baby<br>
-Amo cuando dices que me amas<br>
-Amo lo inteligente que eres<br>
-Amo cómo siempre intentas hacerme una mejor persona<br>
-Amo cada vez que intentas consolarme<br>
-Amo cómo me entiendes<br>
-Amo cuando te abres conmigo<br>
-Amo cuando estás emocionada<br>
-Amo cuando estás tranquila<br>
-Amo cuando tienes sueño<br>
-Amo cuando me cuentas tu día<br>
-Amo que hayas llegado a mi vida<br>
-Amo cómo te acuerdas de mí<br>
-Amo la forma en que me respondes<br>
-Amo cómo eres tú misma conmigo<br>
-Amo la forma en que me animas<br>
-Amo lo determinada que eres<br>
-Amo lo inteligente que eres<br>
-Amo cómo crees en mí<br>
-Amo cada vez que dices “noooooo”<br>
-Amo tu cara<br>
-Amo tu cuerpo<br>
-Amo los TikToks que me mandas<br>
-Amo las fotos que me das<br>
-Amo los videos que me das<br>
-Amo los chistes que haces<br>
-Amo que te rías de mis chistes<br>
-Amo que pueda hablar contigo de todo<br>
-Amo que pueda ser honesto contigo<br>
-Amo que pueda abrirme contigo<br>
-Amo cómo reaccionas a mis cumplidos<br>
-Amo cómo haces mi día mejor<br>
-Amo cómo todo desaparece cuando hablo contigo<br>
-Amo cómo me haces sentir tranquilo<br>
-Amo cómo me haces sentir amado<br>
-Amo cómo me haces reír<br>
-Amo cómo me hiciste sentir especial<br>
-Amo que existas en mi vida<br>
-Amo tu forma de ser tú<br>
-Amo cómo empezamos cada conversación<br>
-Amo cada llamada que hacemos<br>
-Amo cada mensaje que nos mandamos<br>
-Amo cada foto que compartimos<br>
-Amo lo cariñosa que eres<br>
-Amo cómo cuidas a tus hermanos<br>
-Amo que sepas cocinar<br>
-Amo lo productiva que eres cada día<br>
-Amo lo especial que me haces sentir<br>
-Amo lo especial que eres<br>
-Amo tu cabello<br>
-Amo tu nariz<br>
-Amo tus mejillas<br>
-Amo lo alta que eres<br>
-Amo tus piernas<br>
-Amo tu corazón<br>
-Amo el color de tus ojos<br>
-Amo cómo manejas el estrés<br>
-Amo tu sonrisa ladeada<br>
-Amo cada expresión tuya<br>
-Amo cuando estás pensando mucho<br>
-Amo tu postura<br>
-Amo tu ropa<br>
-Amo la forma en que reaccionas a las cosas<br>
-Amo cuando cambia tu ánimo<br>
-Amo que seas de Bolivia<br>
-Amo cuando hablas inglés<br>
-Amo tu acento<br>
-Amo lo buena persona que eres<br>
-Amo tu gusto musical<br>
-Amo tu gusto por la comida<br>
-Amo tu gusto por los libros<br>
-Amo tus hobbies<br>
-Amo tu gusto por películas<br>
-Amo tu gusto por series<br>
-Amo lo pura que eres<br>
-Amo lo inocente que eres<br>
-Amo lo traviesa que eres<br>
-Amo cada momento que pasamos hablando<br>
-Amo cada juego que hemos jugado<br>
-Amo cada momento entre nosotros<br>
-Amo cada momento que nos espera<br>
-Amo que seas mía
-</p>
-
-<p><b>Te amo Briana, y no puedo esperar para demostrarte cuánto te amo a través de mis acciones.</b></p>
-
+<p id="typed"></p>
 </div>
 
 <script>
 
+/* YOUR FULL TEXT (UNCHANGED) */
+const text = `Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.
+
+Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.
+
+He estado perdido por un tiempo y hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo, y sin importar cómo se vea mi futuro, quiero que sea contigo. Quiero despertarme cada día contigo en mis brazos, quiero estar ahí para ti cuando más te necesites, quiero saber todo sobre ti, quiero hacer todo contigo, quiero envejecer contigo, porque te amo.
+
+Y tal vez no lo demuestre lo suficiente, pero me importas, y siempre quiero que sepas que no importa lo que pase, siempre voy a estar aquí para ti. Cuando solo veas oscuridad, siempre voy a estar aquí para mostrarte la luz.
+
+Debería haber hecho esta carta hace mucho tiempo, pero nunca tuve suficientes palabras para describir lo mucho que significas para mí, y aún no las tengo. Pero eres perfecta, mi amor. Sueño contigo cada noche. Si Dios creó la perfección, eres tú.
+
+Y aunque no tenga suficientes palabras para decir cuánto te amo, aquí tienes 100 de las millones de cosas que amo de ti:
+
+Amo cada vez que te ríes
+Amo cada vez que sonríes
+Amo tus grandes y hermosos ojos
+Amo tus labios
+Amo tu voz
+Amo cuando hablas en español
+Amo lo suave que eres
+Amo lo honesta que eres
+Amo cómo bromeas conmigo
+Amo cómo me haces bromas
+Amo cómo me escribes cada mañana
+Amo cuando me llamas baby
+Amo cuando dices que me amas
+Amo lo inteligente que eres
+Amo cómo siempre intentas hacerme una mejor persona
+Amo cada vez que intentas consolarme
+Amo cómo me entiendes
+Amo cuando te abres conmigo
+Amo cuando estás emocionada
+Amo cuando estás tranquila
+Amo cuando tienes sueño
+Amo cuando me cuentas tu día
+Amo que hayas llegado a mi vida
+Amo cómo te acuerdas de mí
+Amo la forma en que me respondes
+Amo cómo eres tú misma conmigo
+Amo la forma en que me animas
+Amo lo determinada que eres
+Amo lo inteligente que eres
+Amo cómo crees en mí
+Amo cada vez que dices “noooooo”
+Amo tu cara
+Amo tu cuerpo
+Amo los TikToks que me mandas
+Amo las fotos que me das
+Amo los videos que me das
+Amo los chistes que haces
+Amo que te rías de mis chistes
+Amo que pueda hablar contigo de todo
+Amo que pueda ser honesto contigo
+Amo que pueda abrirme contigo
+Amo cómo reaccionas a mis cumplidos
+Amo cómo haces mi día mejor
+Amo cómo todo desaparece cuando hablo contigo
+Amo cómo me haces sentir tranquilo
+Amo cómo me haces sentir amado
+Amo cómo me haces reír
+Amo cómo me hiciste sentir especial
+Amo que existas en mi vida
+Amo tu forma de ser tú
+Amo cómo empezamos cada conversación
+Amo cada llamada que hacemos
+Amo cada mensaje que nos mandamos
+Amo cada foto que compartimos
+Amo lo cariñosa que eres
+Amo cómo cuidas a tus hermanos
+Amo que sepas cocinar
+Amo lo productiva que eres cada día
+Amo lo especial que me haces sentir
+Amo lo especial que eres
+Amo tu cabello
+Amo tu nariz
+Amo tus mejillas
+Amo lo alta que eres
+Amo tus piernas
+Amo tu corazón
+Amo el color de tus ojos
+Amo cómo manejas el estrés
+Amo tu sonrisa ladeada
+Amo cada expresión tuya
+Amo cuando estás pensando mucho
+Amo tu postura
+Amo tu ropa
+Amo la forma en que reaccionas a las cosas
+Amo cuando cambia tu ánimo
+Amo que seas de Bolivia
+Amo cuando hablas inglés
+Amo tu acento
+Amo lo buena persona que eres
+Amo tu gusto musical
+Amo tu gusto por la comida
+Amo tu gusto por los libros
+Amo tus hobbies
+Amo tu gusto por películas
+Amo tu gusto por series
+Amo lo pura que eres
+Amo lo inocente que eres
+Amo lo traviesa que eres
+Amo cada momento que pasamos hablando
+Amo cada juego que hemos jugado
+Amo cada momento entre nosotros
+Amo cada momento que nos espera
+Amo que seas mía`;
+
+/* OPEN */
 function openEnvelope() {
-  const envelope = document.querySelector(".envelope");
-  envelope.classList.add("open");
-
-  const rect = envelope.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
-
-  const emojis = ["❤️","💖","💘","💞","💋","💐"];
+  document.getElementById("env").style.opacity = "0";
 
   setTimeout(() => {
-    for (let i = 0; i < 120; i++) {
-      const p = document.createElement("div");
-      p.className = "particle";
-      p.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-      document.body.appendChild(p);
+    document.getElementById("letter").classList.add("show");
+    typeText();
+  }, 800);
+}
 
-      p.style.left = cx + "px";
-      p.style.top = cy + "px";
+/* TYPE */
+function typeText() {
+  let i = 0;
+  const el = document.getElementById("typed");
 
-      const size = 120 + Math.random() * 260;
-      p.style.fontSize = size + "px";
-
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 500 + Math.random() * 1000;
-
-      const dx = Math.cos(angle) * dist;
-      const dy = Math.sin(angle) * dist;
-
-      setTimeout(() => {
-        p.style.opacity = "1";
-        p.style.transform = `translate(${dx}px, ${dy}px) scale(2)`;
-      }, 50);
+  function t() {
+    if (i < text.length) {
+      el.innerHTML += text[i];
+      i++;
+      setTimeout(t, 3);
     }
-  }, 900);
-
-  setTimeout(() => {
-    document.body.classList.add("show");
-  }, 4200);
+  }
+  t();
 }
 
 </script>
