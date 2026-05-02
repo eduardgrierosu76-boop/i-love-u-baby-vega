@@ -90,14 +90,14 @@
   .heart::before { top: -22px; left: 0; }
   .heart::after { left: -22px; top: 0; }
 
-  /* ❤️ FULL SCREEN HEART WALL */
+  /* ❤️ BIG HEARTS */
   .particle {
     position: fixed;
     opacity: 0;
     z-index: 50;
     pointer-events: none;
 
-    transition: opacity 1s ease, transform 1.2s ease;
+    transition: opacity 1.2s ease, transform 1.2s ease;
 
     filter: drop-shadow(0 12px 18px rgba(0,0,0,0.25));
   }
@@ -194,43 +194,35 @@ function start() {
   document.getElementById("bgm").play();
   document.querySelector(".envelope").classList.add("open");
 
-  /* 💖 TRUE FULL SCREEN HEART WALL (FIXED DENSITY) */
+  /* 💖 FEWER BUT VERY BIG HEARTS */
 
-  const cols = 8;   // increased
-  const rows = 14;  // increased
+  const positions = [
+    [15, 20], [50, 15], [85, 20],
+    [20, 50], [50, 45], [80, 50],
+    [25, 80], [55, 80], [85, 80]
+  ];
 
-  const totalW = 100 / cols;
-  const totalH = 100 / rows;
+  for (let i = 0; i < positions.length; i++) {
 
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.innerText = "❤️";
 
-      const p = document.createElement("div");
-      p.className = "particle";
-      p.innerText = "❤️";
+    document.body.appendChild(p);
 
-      document.body.appendChild(p);
+    const [x, y] = positions[i];
 
-      // perfect grid fill
-      const x = c * totalW + totalW / 2;
-      const y = r * totalH + totalH / 2;
+    p.style.left = x + "vw";
+    p.style.top = y + "vh";
 
-      // tiny randomness so it feels alive
-      const offsetX = (Math.random() - 0.5) * 6;
-      const offsetY = (Math.random() - 0.5) * 6;
+    /* BIGGER HEARTS */
+    const size = 120 + Math.random() * 60; // 120–180px
+    p.style.fontSize = size + "px";
 
-      p.style.left = (x + offsetX) + "vw";
-      p.style.top = (y + offsetY) + "vh";
-
-      // BIG hearts scaled to screen density
-      const size = Math.min(window.innerWidth, window.innerHeight) * 0.12;
-      p.style.fontSize = size + "px";
-
-      setTimeout(() => {
-        p.style.opacity = "1";
-        p.style.transform = "scale(1.15)";
-      }, 80);
-    }
+    setTimeout(() => {
+      p.style.opacity = "1";
+      p.style.transform = "scale(1.1)";
+    }, 120);
   }
 
   // ❤️ message
@@ -238,7 +230,7 @@ function start() {
     document.querySelector(".message").style.opacity = "1";
   }, 500);
 
-  // fade
+  // fade everything
   setTimeout(() => {
     document.querySelector(".envelope").classList.add("fade");
     document.querySelector(".message").classList.add("fade");
@@ -248,7 +240,7 @@ function start() {
     });
   }, 1800);
 
-  // letter
+  // show letter
   setTimeout(() => {
     document.getElementById("scene").classList.add("show");
   }, 3200);
