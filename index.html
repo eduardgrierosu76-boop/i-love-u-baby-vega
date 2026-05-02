@@ -7,60 +7,37 @@
     body {
       margin: 0;
       height: 100vh;
+      overflow: hidden;
       background: #f7e9ff;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
       font-family: Arial;
     }
 
-    /* ✉️ ENVELOPE BASE */
+    /* ✉️ ENVELOPE */
     .envelope {
       width: 360px;
       height: 240px;
       background: white;
-      position: relative;
       border-radius: 10px;
+      position: relative;
       box-shadow: 0 15px 35px rgba(0,0,0,0.2);
       cursor: pointer;
       z-index: 5;
+      transition: opacity 0.6s ease;
     }
 
-    /* BOTTOM TRIANGLE */
     .envelope::before {
       content: "";
       position: absolute;
-      bottom: 0;
-      left: 0;
-      border-left: 180px solid transparent;
-      border-right: 180px solid transparent;
-      border-bottom: 120px solid #e8d7ff;
-      width: 0;
-      height: 0;
-    }
-
-    /* TOP FLAP */
-    .flap {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 0;
       border-left: 180px solid transparent;
       border-right: 180px solid transparent;
       border-top: 120px solid #e8d7ff;
-      transform-origin: top;
-      transition: transform 0.8s ease;
-      z-index: 3;
+      top: 0;
+      left: 0;
     }
 
-    /* OPEN FLAP */
-    .open .flap {
-      transform: rotateX(180deg);
-    }
-
-    /* ❤️ HEART (CENTER) */
     .heart {
       position: absolute;
       width: 50px;
@@ -69,8 +46,6 @@
       top: 95px;
       left: 155px;
       transform: rotate(45deg);
-      z-index: 6;
-      transition: opacity 0.3s ease;
     }
 
     .heart::before,
@@ -86,61 +61,38 @@
     .heart::before { top: -25px; left: 0; }
     .heart::after { left: -25px; top: 0; }
 
-    /* 🌸 EMOJI BURST */
-    .emoji {
-      position: absolute;
-      font-size: 28px;
-      opacity: 0;
-      z-index: 10;
-      transition: all 1.2s ease;
-    }
-
-    .open .emoji {
-      opacity: 1;
-    }
-
-    /* spread animations */
-    .e1 { top: 90px; left: 150px; }
-    .e2 { top: 100px; left: 160px; }
-    .e3 { top: 95px; left: 145px; }
-    .e4 { top: 105px; left: 155px; }
-
-    .open .e1 { transform: translate(-120px, -200px); }
-    .open .e2 { transform: translate(140px, -180px); }
-    .open .e3 { transform: translate(-160px, 120px); }
-    .open .e4 { transform: translate(180px, 140px); }
-
-    /* 📄 LETTER */
+    /* 💌 LETTER */
     .letter {
       position: fixed;
-      width: 210mm;
-      height: 297mm;
-      max-width: 90vw;
-      max-height: 90vh;
+      inset: 0;
       background: #fffafc;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 25px;
-      box-sizing: border-box;
-      border-radius: 10px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      padding: 40px;
       opacity: 0;
       transition: opacity 1s ease;
       z-index: 1;
     }
 
-    /* FLOWERS/EMOJIS FADE OUT */
-    .show .emoji {
+    /* 💥 EMOJIS */
+    .emoji {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0;
+      transform: translate(0,0) scale(0.3);
+      transition: all 1.8s ease;
+      z-index: 10;
+    }
+
+    /* STATES */
+    .open .envelope {
       opacity: 0;
     }
 
-    .show .letter {
+    .open .heart {
+      opacity: 0;
+    }
+
+    .open .letter {
       opacity: 1;
-    }
-
-    .show .heart {
-      opacity: 0;
     }
 
   </style>
@@ -150,20 +102,13 @@
 
 <div id="container">
 
-  <div class="envelope" onclick="openScene()">
-    <div class="flap"></div>
+  <div class="envelope" onclick="explode()">
     <div class="heart"></div>
-
-    <div class="emoji e1">❤️</div>
-    <div class="emoji e2">🫶</div>
-    <div class="emoji e3">💐</div>
-    <div class="emoji e4">🌹</div>
   </div>
 
   <div class="letter">
     <h1>My Love ❤️</h1>
     <p>This is everything I want to tell you...</p>
-
     <h3>100 Things I Love About You</h3>
     <ul>
       <li>Your smile</li>
@@ -175,20 +120,49 @@
 </div>
 
 <script>
-let stage = 0;
+const emojis = ["❤️","🫶","💐","🌹"];
+let exploded = false;
 
-function openScene() {
-  const c = document.getElementById("container");
+function explode() {
+  if (exploded) return;
+  exploded = true;
 
-  if (stage === 0) {
-    c.classList.add("open");
+  const container = document.getElementById("container");
+
+  container.classList.add("open");
+
+  // create 120 emojis
+  for (let i = 0; i < 120; i++) {
+    const el = document.createElement("div");
+    el.className = "emoji";
+    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+
+    // start center (inside envelope)
+    el.style.left = "50%";
+    el.style.top = "50%";
+
+    document.body.appendChild(el);
+
+    // random explosion direction
+    const x = (Math.random() - 0.5) * 1200;
+    const y = (Math.random() - 0.5) * 800;
+    const scale = 1 + Math.random() * 3;
 
     setTimeout(() => {
-      c.classList.add("show");
-    }, 1200);
+      el.style.opacity = "1";
+      el.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+    }, 50);
 
-    stage = 1;
+    // fade out later
+    setTimeout(() => {
+      el.style.opacity = "0";
+    }, 1600);
   }
+
+  // show letter after explosion
+  setTimeout(() => {
+    document.querySelector(".letter").style.opacity = "1";
+  }, 1800);
 }
 </script>
 
