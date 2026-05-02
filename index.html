@@ -29,8 +29,24 @@
       overflow: hidden;
     }
 
-    /* FRONT HEART (PRINTED ON ENVELOPE FACE) */
-    .front-heart {
+    /* FLAP (ALSO WHITE - NO PINK ANYWHERE) */
+    .flap {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 170px solid transparent;
+      border-right: 170px solid transparent;
+      border-top: 120px solid #ffffff;
+      top: 0;
+      left: 0;
+      transform-origin: top;
+      transition: 0.6s ease;
+      z-index: 3;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.05);
+    }
+
+    /* HEART (ONLY FRONT DECORATION) */
+    .heart {
       position: absolute;
       width: 50px;
       height: 50px;
@@ -38,12 +54,12 @@
       top: 85px;
       left: 145px;
       transform: rotate(45deg);
-      z-index: 2;
-      transition: opacity 0.4s ease;
+      z-index: 4;
+      transition: opacity 0.3s ease;
     }
 
-    .front-heart::before,
-    .front-heart::after {
+    .heart::before,
+    .heart::after {
       content: "";
       position: absolute;
       width: 50px;
@@ -52,72 +68,51 @@
       border-radius: 50%;
     }
 
-    .front-heart::before { top: -25px; left: 0; }
-    .front-heart::after { left: -25px; top: 0; }
+    .heart::before { top: -25px; left: 0; }
+    .heart::after { left: -25px; top: 0; }
 
-    /* FLAP (TOP TRIANGLE) */
-    .flap {
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-left: 170px solid transparent;
-      border-right: 170px solid transparent;
-      border-top: 120px solid #f2f2f2;
-      top: 0;
-      left: 0;
-      transform-origin: top;
-      transition: 0.6s ease;
-      z-index: 3;
-    }
-
-    /* PAPER (START INSIDE CENTER SMALL) */
+    /* PAPER (COMPLETELY HIDDEN AT START) */
     .paper {
       position: absolute;
-      width: 140px;
-      height: 160px;
+      width: 280px;
+      height: 380px;
       background: white;
-      left: 100px;
-      top: 60px;
-      border-radius: 6px;
-      padding: 10px;
+      left: 30px;
+      top: 220px; /* fully INSIDE envelope */
+      border-radius: 8px;
+      padding: 15px;
       box-sizing: border-box;
-      transform: scale(0.3);
-      transform-origin: center;
       transition: 0.8s ease;
       z-index: 1;
       overflow: hidden;
     }
 
-    /* STAGE 1 */
+    /* STAGE 1: OPEN FLAP + START PAPER EXIT */
     .stage1 .flap {
       transform: rotateX(180deg);
     }
 
     .stage1 .paper {
-      transform: scale(0.7);
-      top: 20px;
+      top: 40px; /* peeking out */
     }
 
-    /* STAGE 2 (FULL OPEN) */
+    /* STAGE 2: FULL PAPER OUT */
     .stage2 .paper {
-      transform: scale(1.6);
-      top: -140px;
+      top: -150px;
     }
 
-    /* WHEN FULLY OPEN → HEART DISAPPEARS */
-    .stage2 .front-heart {
+    /* HEART DISAPPEARS ONLY WHEN FULL OPEN */
+    .stage2 .heart {
       opacity: 0;
     }
 
     h2 {
       margin: 0;
-      font-size: 16px;
     }
 
     ul {
       text-align: left;
       padding-left: 15px;
-      font-size: 12px;
     }
 
     .hint {
@@ -132,8 +127,7 @@
   <div class="envelope" id="env" onclick="openEnvelope()">
 
     <div class="flap"></div>
-
-    <div class="front-heart"></div>
+    <div class="heart"></div>
 
     <div class="paper">
       <h2>My Love ❤️</h2>
@@ -149,7 +143,7 @@
 
   </div>
 
-  <p class="hint">Click → open → reveal 💌</p>
+  <p class="hint">Click once → open, click again → reveal 💌</p>
 </div>
 
 <script>
