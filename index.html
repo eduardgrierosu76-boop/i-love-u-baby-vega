@@ -12,11 +12,6 @@
     font-family: Arial;
   }
 
-  /* 🎵 MUSIC */
-  audio {
-    display: none;
-  }
-
   /* ✉️ ENVELOPE */
   .envelope {
     width: 80vw;
@@ -93,15 +88,15 @@
   .heart::before { top: -22px; left: 0; }
   .heart::after { left: -22px; top: 0; }
 
-  /* 💥 EMOJIS */
-  .emoji {
+  /* 💥 HEART PARTICLES */
+  .particle {
     position: fixed;
-    font-size: 50px;
+    font-size: 38px;
     opacity: 0;
-    transition: all 2s ease;
+    transition: all 1.6s ease;
     pointer-events: none;
     z-index: 50;
-    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.15));
+    filter: drop-shadow(0 8px 10px rgba(0,0,0,0.15));
   }
 
   /* ❤️ MESSAGE */
@@ -110,7 +105,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 48px;
+    font-size: 46px;
     font-weight: bold;
     color: white;
     opacity: 0;
@@ -119,7 +114,7 @@
     text-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
 
-  /* 📄 LETTER (MOBILE A4) */
+  /* 📄 LETTER */
   .letter {
     position: fixed;
     inset: 12px;
@@ -157,7 +152,6 @@
 
 <body>
 
-<!-- 🎵 ROMANTIC MUSIC -->
 <audio id="bgm" loop>
   <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1b5b1c3b1.mp3?filename=romantic-110727.mp3" type="audio/mp3">
 </audio>
@@ -176,7 +170,7 @@
     <h2>My Love ❤️</h2>
     <p>This is everything I want to tell you...</p>
 
-    <h3>100 Things I Love About You</h3>
+    <h3>100 Things I Love</h3>
     <ul>
       <li>Your smile</li>
       <li>Your laugh</li>
@@ -188,34 +182,31 @@
 
 <script>
 
-const emojis = ["❤️","🫶","💐","🌹"];
 let started = false;
 
 function start() {
   if (started) return;
   started = true;
 
-  // 🎵 start music
   document.getElementById("bgm").play();
 
-  const envelope = document.querySelector(".envelope");
-  envelope.classList.add("open");
+  document.querySelector(".envelope").classList.add("open");
 
-  // 💥 softer emoji burst (reduced + elegant)
-  for (let i = 0; i < 70; i++) {
-    const e = document.createElement("div");
-    e.className = "emoji";
-    e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+  // 💥 HEART EXPLOSION (only hearts now)
+  for (let i = 0; i < 80; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.innerText = "❤️";
 
-    document.body.appendChild(e);
+    document.body.appendChild(p);
 
-    e.style.left = Math.random() * window.innerWidth + "px";
-    e.style.top = Math.random() * window.innerHeight + "px";
+    p.style.left = Math.random() * window.innerWidth + "px";
+    p.style.top = Math.random() * window.innerHeight + "px";
 
     setTimeout(() => {
-      e.style.opacity = "1";
-      e.style.transform = "scale(4.5)";
-    }, 120);
+      p.style.opacity = "1";
+      p.style.transform = "scale(5)";
+    }, 100);
   }
 
   // ❤️ message
@@ -223,13 +214,13 @@ function start() {
     document.querySelector(".message").style.opacity = "1";
   }, 500);
 
-  // fade everything together
+  // fade everything
   setTimeout(() => {
     document.querySelector(".envelope").classList.add("fade");
     document.querySelector(".message").classList.add("fade");
 
-    document.querySelectorAll(".emoji").forEach(e => {
-      e.classList.add("fade");
+    document.querySelectorAll(".particle").forEach(p => {
+      p.classList.add("fade");
     });
   }, 1800);
 
