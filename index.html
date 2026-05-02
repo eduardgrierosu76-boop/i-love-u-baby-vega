@@ -12,9 +12,25 @@
     font-family: Arial;
   }
 
+  /* 🎵 AUDIO */
   audio { display: none; }
 
-  /* ✉️ ENVELOPE (CLICK SAFE) */
+  /* 💗 BACKGROUND FLOATING HEARTS */
+  .bg-heart {
+    position: fixed;
+    color: rgba(255, 0, 80, 0.25);
+    font-size: 24px;
+    z-index: 1;
+    pointer-events: none;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+  }
+
+  /* ✉️ ENVELOPE */
   .envelope {
     width: 80vw;
     max-width: 320px;
@@ -26,12 +42,10 @@
     transform: translate(-50%, -50%);
 
     cursor: pointer;
-    z-index: 999; /* IMPORTANT FIX */
-
-    pointer-events: auto; /* IMPORTANT FIX */
+    z-index: 50;
   }
 
-  .envelope-body {
+  .body {
     width: 100%;
     height: 100%;
     background: white;
@@ -42,15 +56,12 @@
 
   .flap {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-left: 160px solid transparent;
-    border-right: 160px solid transparent;
-    border-top: 110px solid #e8d7ff;
+    width: 100%;
+    height: 100%;
+    background: white;
+    clip-path: polygon(0 0, 100% 0, 50% 60%);
     transform-origin: top;
-    transition: transform 1s ease;
+    transition: transform 1.5s ease;
     z-index: 3;
   }
 
@@ -58,19 +69,20 @@
     transform: rotateX(180deg);
   }
 
-  .heart {
+  /* ❤️ HEART ON ENVELOPE */
+  .center-heart {
     position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
     width: 45px;
     height: 45px;
     background: #d1003f;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-    z-index: 5;
+    z-index: 4;
   }
 
-  .heart::before,
-  .heart::after {
+  .center-heart::before,
+  .center-heart::after {
     content: "";
     position: absolute;
     width: 45px;
@@ -79,61 +91,41 @@
     border-radius: 50%;
   }
 
-  .heart::before { top: -22px; left: 0; }
-  .heart::after { left: -22px; top: 0; }
+  .center-heart::before { top: -22px; left: 0; }
+  .center-heart::after { left: -22px; top: 0; }
 
-  /* ❤️ HEARTS */
+  /* 💥 BURST ITEMS */
   .particle {
     position: fixed;
-    opacity: 0;
-    z-index: 50;
+    z-index: 40;
     pointer-events: none;
-    transition: transform 1.6s ease, opacity 1.2s ease;
-    filter: drop-shadow(0 12px 18px rgba(0,0,0,0.25));
+    opacity: 0;
+    transition: transform 1.5s ease, opacity 1.5s ease;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.25));
   }
 
-  /* 💌 LETTER */
+  /* 📄 LETTER */
   .letter {
     position: fixed;
-    inset: 10px;
+    inset: 12px;
     background: #fffafc;
     border-radius: 14px;
     padding: 20px;
     box-sizing: border-box;
 
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.85);
 
     transition: all 1.2s ease;
 
     box-shadow: 0 30px 80px rgba(0,0,0,0.35);
 
     z-index: 999;
-    pointer-events: none;
   }
 
-  .show-letter .letter {
+  .show .letter {
     opacity: 1;
     transform: scale(1);
-    pointer-events: auto;
-  }
-
-  .message {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 46px;
-    font-weight: bold;
-    color: white;
-    opacity: 0;
-    text-align: center;
-    z-index: 60;
-  }
-
-  .fade {
-    opacity: 0 !important;
-    transition: opacity 1.2s ease !important;
   }
 
 </style>
@@ -145,15 +137,29 @@
   <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1b5b1c3b1.mp3">
 </audio>
 
-<!-- ✉️ CLICKABLE ENVELOPE -->
-<div class="envelope" id="envelope" onclick="start()">
-  <div class="envelope-body"></div>
+<!-- 💗 BACKGROUND HEARTS -->
+<script>
+for (let i = 0; i < 20; i++) {
+  const h = document.createElement("div");
+  h.className = "bg-heart";
+  h.innerText = "❤️";
+
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.animationDuration = (6 + Math.random() * 6) + "s";
+  h.style.fontSize = (20 + Math.random() * 20) + "px";
+
+  document.body.appendChild(h);
+}
+</script>
+
+<!-- ✉️ ENVELOPE -->
+<div class="envelope" onclick="start()">
+  <div class="body"></div>
   <div class="flap"></div>
-  <div class="heart"></div>
+  <div class="center-heart"></div>
 </div>
 
-<div class="message">I LOVE YOU ❤️</div>
-
+<!-- 📄 LETTER -->
 <div class="letter">
   <h2>My Love ❤️</h2>
   <p>This is everything I want to tell you...</p>
@@ -161,61 +167,57 @@
 
 <script>
 
-let started = false;
-
 function start() {
-  if (started) return;
-  started = true;
 
   const music = document.getElementById("bgm");
   music.play().catch(()=>{});
 
-  document.getElementById("envelope").classList.add("open");
+  document.querySelector(".envelope").classList.add("open");
 
-  const rect = document.getElementById("envelope").getBoundingClientRect();
-
+  const rect = document.querySelector(".envelope").getBoundingClientRect();
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
 
-  for (let i = 0; i < 45; i++) {
+  const items = ["❤️","💋","❤️","💖","💋"];
+
+  /* 💥 BURST OUT FULL SCREEN COVER */
+  for (let i = 0; i < 70; i++) {
 
     const p = document.createElement("div");
     p.className = "particle";
-    p.innerText = "❤️";
+    p.innerText = items[Math.floor(Math.random()*items.length)];
 
     document.body.appendChild(p);
 
     p.style.left = cx + "px";
     p.style.top = cy + "px";
 
-    const size = 140 + Math.random() * 180;
+    const size = 120 + Math.random() * 200;
     p.style.fontSize = size + "px";
 
     const angle = Math.random() * Math.PI * 2;
-    const dist = 250 + Math.random() * 500;
+    const dist = 300 + Math.random() * 600;
 
     const dx = Math.cos(angle) * dist;
     const dy = Math.sin(angle) * dist;
 
     setTimeout(() => {
       p.style.opacity = "1";
-      p.style.transform = `translate(${dx}px, ${dy}px) scale(1.4)`;
-    }, 50);
+      p.style.transform = `translate(${dx}px, ${dy}px) scale(1.5)`;
+    }, 80);
   }
 
+  /* 💥 FADE BURST */
   setTimeout(() => {
-    document.querySelector(".message").style.opacity = "1";
-  }, 500);
-
-  setTimeout(() => {
-    document.querySelectorAll(".particle").forEach(p => p.classList.add("fade"));
-    document.querySelector(".message").classList.add("fade");
-    document.getElementById("envelope").classList.add("fade");
+    document.querySelectorAll(".particle").forEach(p => {
+      p.style.opacity = "0";
+    });
   }, 1800);
 
+  /* 📄 SHOW LETTER */
   setTimeout(() => {
-    document.body.classList.add("show-letter");
-  }, 2800);
+    document.querySelector(".letter").classList.add("show");
+  }, 2600);
 }
 
 </script>
