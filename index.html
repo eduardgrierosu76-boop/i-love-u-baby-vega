@@ -17,19 +17,19 @@
       text-align: center;
     }
 
-    /* OUTER ENVELOPE */
+    /* OUTER ENVELOPE (WHITE ONLY) */
     .envelope {
       position: relative;
       width: 340px;
       height: 220px;
-      background: #fff; /* make envelope WHITE */
+      background: #ffffff; /* FORCE WHITE */
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 0 12px 30px rgba(0,0,0,0.2);
       overflow: hidden;
     }
 
-    /* BACK FLAP */
+    /* FLAP (ONLY PINK PART) */
     .flap {
       position: absolute;
       width: 0;
@@ -41,20 +41,37 @@
       left: 0;
       transform-origin: top;
       transition: 0.6s;
-      z-index: 1;
+      z-index: 2;
     }
 
-    /* HEART (ON TOP OF EVERYTHING) */
+    /* CONTENT AREA (BEHIND HEART) */
+    .paper {
+      position: absolute;
+      width: 140px;
+      height: 160px;
+      background: white;
+      left: 100px;
+      top: 60px;
+      border-radius: 6px;
+      padding: 10px;
+      box-sizing: border-box;
+      transition: 0.8s ease;
+      transform: scale(0.3);
+      transform-origin: center;
+      z-index: 1; /* behind heart */
+      overflow: hidden;
+    }
+
+    /* HEART (ALWAYS ON TOP) */
     .heart {
       position: absolute;
       width: 45px;
       height: 45px;
       background: #e60026;
-      top: 85px;
+      top: 88px;
       left: 147px;
       transform: rotate(45deg);
-      z-index: 10; /* ALWAYS ON TOP */
-      transition: 0.4s;
+      z-index: 10; /* TOP LAYER ALWAYS */
     }
 
     .heart::before,
@@ -70,49 +87,31 @@
     .heart::before { top: -22px; left: 0; }
     .heart::after { left: -22px; top: 0; }
 
-    /* PAPER (START SMALL INSIDE CENTER) */
-    .paper {
-      position: absolute;
-      width: 120px;
-      height: 140px;
-      background: white;
-      left: 110px;
-      top: 60px;
-      border-radius: 5px;
-      padding: 10px;
-      box-sizing: border-box;
-      transition: 0.8s ease;
-      transform: scale(0.2);
-      transform-origin: center;
-      z-index: 2;
-      overflow: hidden;
-    }
-
     /* STAGE 1 */
     .stage1 .flap {
       transform: rotateX(180deg);
     }
 
     .stage1 .paper {
-      transform: scale(0.6); /* grows slightly */
-      top: 20px;
+      transform: scale(0.6);
+      top: 30px;
     }
 
-    /* STAGE 2 (FULL OPEN) */
+    /* STAGE 2 */
     .stage2 .paper {
-      transform: scale(1.4); /* FULL PAPER OUT */
-      top: -120px;
-    }
-
-    /* TEXT */
-    ul {
-      text-align: left;
-      padding-left: 15px;
+      transform: scale(1.5);
+      top: -130px;
     }
 
     h2 {
       margin: 0;
-      font-size: 18px;
+      font-size: 16px;
+    }
+
+    ul {
+      text-align: left;
+      padding-left: 15px;
+      font-size: 12px;
     }
 
     .hint {
@@ -127,23 +126,23 @@
   <div class="envelope" id="env" onclick="openEnvelope()">
 
     <div class="flap"></div>
-    <div class="heart"></div>
-
     <div class="paper">
       <h2>My Love ❤️</h2>
       <p>Everything I feel for you...</p>
 
-      <h3>100 Things I Love</h3>
+      <h3>100 Things</h3>
       <ul>
         <li>Your smile</li>
         <li>Your laugh</li>
-        <li>The way you care</li>
+        <li>Your kindness</li>
       </ul>
     </div>
 
+    <div class="heart"></div>
+
   </div>
 
-  <p class="hint">Click once → open, click again → reveal 💌</p>
+  <p class="hint">Click → open → reveal 💌</p>
 </div>
 
 <script>
