@@ -90,7 +90,7 @@
   .heart::before { top: -22px; left: 0; }
   .heart::after { left: -22px; top: 0; }
 
-  /* ❤️ HEART WALL */
+  /* ❤️ FULL SCREEN HEART WALL */
   .particle {
     position: fixed;
     opacity: 0;
@@ -155,7 +155,6 @@
 
 <body>
 
-<!-- 🎵 MUSIC -->
 <audio id="bgm" loop>
   <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1b5b1c3b1.mp3?filename=romantic-110727.mp3" type="audio/mp3">
 </audio>
@@ -195,9 +194,13 @@ function start() {
   document.getElementById("bgm").play();
   document.querySelector(".envelope").classList.add("open");
 
-  /* 💖 FULL HEART WALL GRID */
-  const cols = 6;
-  const rows = 10;
+  /* 💖 TRUE FULL SCREEN HEART WALL (FIXED DENSITY) */
+
+  const cols = 8;   // increased
+  const rows = 14;  // increased
+
+  const totalW = 100 / cols;
+  const totalH = 100 / rows;
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
@@ -208,22 +211,25 @@ function start() {
 
       document.body.appendChild(p);
 
-      const x = (c + 0.5) * (100 / cols);
-      const y = (r + 0.5) * (100 / rows);
+      // perfect grid fill
+      const x = c * totalW + totalW / 2;
+      const y = r * totalH + totalH / 2;
 
-      const offsetX = (Math.random() - 0.5) * 8;
-      const offsetY = (Math.random() - 0.5) * 8;
+      // tiny randomness so it feels alive
+      const offsetX = (Math.random() - 0.5) * 6;
+      const offsetY = (Math.random() - 0.5) * 6;
 
       p.style.left = (x + offsetX) + "vw";
       p.style.top = (y + offsetY) + "vh";
 
-      const size = 90 + Math.random() * 50;
+      // BIG hearts scaled to screen density
+      const size = Math.min(window.innerWidth, window.innerHeight) * 0.12;
       p.style.fontSize = size + "px";
 
       setTimeout(() => {
         p.style.opacity = "1";
-        p.style.transform = "scale(1.2)";
-      }, 100);
+        p.style.transform = "scale(1.15)";
+      }, 80);
     }
   }
 
@@ -232,7 +238,7 @@ function start() {
     document.querySelector(".message").style.opacity = "1";
   }, 500);
 
-  // fade envelope + hearts
+  // fade
   setTimeout(() => {
     document.querySelector(".envelope").classList.add("fade");
     document.querySelector(".message").classList.add("fade");
@@ -242,7 +248,7 @@ function start() {
     });
   }, 1800);
 
-  // show letter
+  // letter
   setTimeout(() => {
     document.getElementById("scene").classList.add("show");
   }, 3200);
