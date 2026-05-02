@@ -12,13 +12,13 @@
     font-family: Arial;
   }
 
-  /* 💗 BACKGROUND FLOATING HEARTS */
+  /* 💗 BACKGROUND HEARTS */
   .bg-heart {
     position: fixed;
     z-index: 1;
     pointer-events: none;
     color: rgba(255, 0, 80, 0.25);
-    font-size: 20px;
+    font-size: 18px;
     animation: floatUp linear infinite;
   }
 
@@ -27,20 +27,39 @@
     to { transform: translateY(-10vh); }
   }
 
-  /* ✉️ ENVELOPE */
+  /* ✉️ ENVELOPE WRAPPER (FOR SLIDE-IN) */
   .envelope {
     width: 80vw;
     max-width: 320px;
     height: 200px;
 
     position: absolute;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    top: 110%; /* start OFF SCREEN */
+    transform: translateX(-50%);
 
     cursor: pointer;
     z-index: 50;
-    transition: opacity 0.6s ease;
+
+    animation: slideUp 1.2s ease forwards;
+  }
+
+  @keyframes slideUp {
+    to {
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  /* TEXT UNDER ENVELOPE */
+  .subtitle {
+    position: absolute;
+    top: calc(50% + 130px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #7a4a6a;
+    z-index: 50;
   }
 
   .body {
@@ -67,18 +86,7 @@
     transform: rotateX(-180deg);
   }
 
-  .flap::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background:
-      linear-gradient(to bottom right, transparent 49%, #ddd 50%, transparent 51%),
-      linear-gradient(to bottom left, transparent 49%, #ddd 50%, transparent 51%);
-    opacity: 0.5;
-  }
-
-  /* ❤️ CENTER HEART (NOW BREAKS) */
+  /* ❤️ PULSING HEART */
   .center-heart {
     position: absolute;
     top: 55%;
@@ -88,7 +96,14 @@
     height: 45px;
     background: #d1003f;
     z-index: 5;
-    transition: transform 0.8s ease, opacity 0.8s ease;
+
+    animation: pulse 1.2s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%   { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+    50%  { transform: translate(-50%, -50%) rotate(45deg) scale(1.2); }
+    100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
   }
 
   .center-heart::before,
@@ -103,12 +118,6 @@
 
   .center-heart::before { top: -22px; left: 0; }
   .center-heart::after { left: -22px; top: 0; }
-
-  /* 💔 broken effect */
-  .open .center-heart {
-    transform: translate(-50%, -50%) rotate(45deg) scale(0) rotate(720deg);
-    opacity: 0;
-  }
 
   /* 💥 EMOJIS */
   .particle {
@@ -167,6 +176,9 @@ for (let i = 0; i < 18; i++) {
   <div class="center-heart"></div>
 </div>
 
+<!-- 📝 TEXT UNDER ENVELOPE -->
+<div class="subtitle">for someone special</div>
+
 <!-- 📄 LETTER -->
 <div class="letter">
   <h2>My Love ❤️</h2>
@@ -186,7 +198,7 @@ function start() {
 
   const emojis = ["❤️","💋","💖","💞","💘"];
 
-  /* 💥 EMOJIS FROM INSIDE */
+  /* 💥 EMOJIS */
   for (let i = 0; i < 100; i++) {
 
     const p = document.createElement("div");
@@ -213,9 +225,10 @@ function start() {
     }, 80);
   }
 
-  /* 💌 hide envelope */
+  /* 💌 hide envelope + text */
   setTimeout(() => {
     envelope.style.opacity = "0";
+    document.querySelector(".subtitle").style.opacity = "0";
   }, 800);
 
   /* 🌫 fade emojis */
