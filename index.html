@@ -90,7 +90,7 @@
   .heart::before { top: -22px; left: 0; }
   .heart::after { left: -22px; top: 0; }
 
-  /* ❤️ BALANCED HEARTS */
+  /* ❤️ HEART WALL */
   .particle {
     position: fixed;
     opacity: 0;
@@ -99,7 +99,7 @@
 
     transition: opacity 1s ease, transform 1.2s ease;
 
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 12px 18px rgba(0,0,0,0.25));
   }
 
   /* ❤️ MESSAGE */
@@ -155,6 +155,7 @@
 
 <body>
 
+<!-- 🎵 MUSIC -->
 <audio id="bgm" loop>
   <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1b5b1c3b1.mp3?filename=romantic-110727.mp3" type="audio/mp3">
 </audio>
@@ -194,33 +195,36 @@ function start() {
   document.getElementById("bgm").play();
   document.querySelector(".envelope").classList.add("open");
 
-  /* 💡 CLEAN HEART LAYOUT (NO OVERLOAD) */
-  const positions = [
-    [10, 20], [40, 15], [70, 20],
-    [20, 45], [50, 40], [80, 45],
-    [15, 70], [45, 65], [75, 70],
-    [25, 88], [55, 88], [85, 88]
-  ];
+  /* 💖 FULL HEART WALL GRID */
+  const cols = 6;
+  const rows = 10;
 
-  for (let i = 0; i < positions.length; i++) {
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.innerText = "❤️";
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
 
-    document.body.appendChild(p);
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.innerText = "❤️";
 
-    const [x, y] = positions[i];
+      document.body.appendChild(p);
 
-    p.style.left = x + "vw";
-    p.style.top = y + "vh";
+      const x = (c + 0.5) * (100 / cols);
+      const y = (r + 0.5) * (100 / rows);
 
-    // big but controlled
-    p.style.fontSize = (80 + Math.random() * 30) + "px";
+      const offsetX = (Math.random() - 0.5) * 8;
+      const offsetY = (Math.random() - 0.5) * 8;
 
-    setTimeout(() => {
-      p.style.opacity = "1";
-      p.style.transform = "scale(1.2)";
-    }, 120);
+      p.style.left = (x + offsetX) + "vw";
+      p.style.top = (y + offsetY) + "vh";
+
+      const size = 90 + Math.random() * 50;
+      p.style.fontSize = size + "px";
+
+      setTimeout(() => {
+        p.style.opacity = "1";
+        p.style.transform = "scale(1.2)";
+      }, 100);
+    }
   }
 
   // ❤️ message
@@ -228,7 +232,7 @@ function start() {
     document.querySelector(".message").style.opacity = "1";
   }, 500);
 
-  // fade scene
+  // fade envelope + hearts
   setTimeout(() => {
     document.querySelector(".envelope").classList.add("fade");
     document.querySelector(".message").classList.add("fade");
