@@ -7,9 +7,10 @@
 <style>
 body {
   margin: 0;
-  overflow: hidden;
-  background: #f7e9ff;
+  overflow: hidden; /* keeps background locked */
   font-family: Arial;
+  background: #f7e9ff;
+  touch-action: manipulation;
 }
 
 /* 💗 BACKGROUND HEARTS */
@@ -43,10 +44,10 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
   cursor: pointer;
 }
 
+/* BASE */
 .base {
   position: absolute;
   width: 100%;
@@ -57,6 +58,7 @@ body {
   z-index: 1;
 }
 
+/* INNER */
 .inner-fill {
   position: absolute;
   width: 100%;
@@ -66,6 +68,7 @@ body {
   z-index: 2;
 }
 
+/* FLAP */
 .flap {
   position: absolute;
   top: 0;
@@ -83,6 +86,7 @@ body {
   transform: rotateX(-165deg);
 }
 
+/* ❤️ HEART */
 .heart {
   position: absolute;
   top: 55%;
@@ -114,6 +118,7 @@ body {
   100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
 }
 
+/* TEXT */
 .text {
   position: absolute;
   bottom: 18px;
@@ -124,6 +129,7 @@ body {
   z-index: 6;
 }
 
+/* 💥 EMOJIS */
 .particle {
   position: fixed;
   z-index: 9999;
@@ -132,6 +138,7 @@ body {
   transition: transform 1.6s ease, opacity 2s ease;
 }
 
+/* 📄 LETTER (SWIPE FIXED) */
 .letter {
   position: fixed;
   inset: 12px;
@@ -144,15 +151,19 @@ body {
   transition: 1.2s ease;
 
   z-index: 100000;
-  pointer-events: none;
 
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* ⭐ smooth mobile swipe */
+
   box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+
+  pointer-events: none;
 }
 
 .show .letter {
   opacity: 1;
   transform: scale(1);
+  pointer-events: auto; /* ⭐ enables swipe */
 }
 
 .letter p {
@@ -166,18 +177,22 @@ body {
 
 <div class="scene">
 
+<!-- 💗 BACKGROUND HEARTS -->
 <script>
 for (let i = 0; i < 18; i++) {
   const h = document.createElement("div");
   h.className = "bg-heart";
   h.innerText = "❤️";
+
   h.style.left = Math.random() * 100 + "vw";
   h.style.animationDuration = (6 + Math.random() * 6) + "s";
   h.style.fontSize = (14 + Math.random() * 18) + "px";
+
   document.body.appendChild(h);
 }
 </script>
 
+<!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="openEnvelope()">
   <div class="base"></div>
   <div class="inner-fill"></div>
@@ -186,6 +201,7 @@ for (let i = 0; i < 18; i++) {
   <div class="text">for someone special</div>
 </div>
 
+<!-- 📄 LETTER -->
 <div class="letter">
 
   <h2>something you need to know:</h2>
@@ -221,9 +237,11 @@ function openEnvelope() {
 
   setTimeout(() => {
     for (let i = 0; i < 120; i++) {
+
       const p = document.createElement("div");
       p.className = "particle";
       p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+
       document.body.appendChild(p);
 
       p.style.left = cx + "px";
