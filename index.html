@@ -27,14 +27,14 @@ body {
   to { transform: translateY(-10vh); }
 }
 
-/* 📦 PERSPECTIVE */
+/* 📦 SCENE */
 .scene {
   position: absolute;
   inset: 0;
   perspective: 900px;
 }
 
-/* ✉️ ENVELOPE */
+/* ✉️ ENVELOPE (NOW ONE SOLID BASE) */
 .envelope {
   width: 320px;
   height: 220px;
@@ -43,34 +43,29 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  transform-style: preserve-3d;
 
   cursor: pointer;
-  z-index: 50;
 }
 
-/* 📦 BODY (BOTTOM) */
-.body {
+/* 🧾 FULL BACKING (THIS REMOVES “EMPTY SPACE LOOK”) */
+.base {
   position: absolute;
-  bottom: 0;
   width: 100%;
-  height: 72%;
-
+  height: 100%;
   background: white;
   border-radius: 10px;
-
   box-shadow: 0 25px 50px rgba(0,0,0,0.25);
   z-index: 1;
 }
 
-/* 🔺 FLAP (OVERLAPS BODY TO REMOVE GAP) */
+/* 🔺 FLAP (NOW JUST A FOLD, NOT A CUT GAP) */
 .flap {
   position: absolute;
-  top: -2px; /* 👈 IMPORTANT: overlaps body */
+  top: 0;
   width: 100%;
-  height: 62%;
+  height: 65%;
 
-  background: white;
+  background: linear-gradient(to bottom, #ffffff 0%, #f2f2f2 100%);
   clip-path: polygon(0 0, 100% 0, 50% 100%);
 
   transform-origin: top;
@@ -78,22 +73,21 @@ body {
 
   z-index: 3;
 
-  box-shadow: 0 8px 12px rgba(0,0,0,0.12);
+  /* soft fold shadow = removes “hole illusion” */
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
 }
 
 .open .flap {
-  transform: rotateX(-160deg);
+  transform: rotateX(-165deg);
 }
 
-/* 🧩 CREASE FIX LAYER (THIS REMOVES THE “EMPTY SPACE”) */
-.crease {
+/* 🔒 INNER FILL LAYER (KEY FIX — removes “missing middle”) */
+.inner-fill {
   position: absolute;
-  top: 60%;
-  left: 0;
-  width: 100%;
-  height: 20px;
+  inset: 0;
   background: white;
   z-index: 2;
+  border-radius: 10px;
 }
 
 /* ❤️ HEART */
@@ -168,6 +162,7 @@ body {
   opacity: 1;
   transform: scale(1);
 }
+
 </style>
 </head>
 
@@ -193,11 +188,9 @@ for (let i = 0; i < 18; i++) {
 <!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="openEnvelope()">
 
+  <div class="base"></div>
+  <div class="inner-fill"></div>
   <div class="flap"></div>
-  <div class="body"></div>
-
-  <!-- 🧩 FIX LAYER -->
-  <div class="crease"></div>
 
   <div class="heart"></div>
   <div class="text">for someone special</div>
