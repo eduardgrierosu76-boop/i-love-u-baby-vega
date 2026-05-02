@@ -1,140 +1,161 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>For You ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
 
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #f7e9ff;
-      font-family: Arial;
-    }
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #f7e9ff;
+    font-family: Arial;
+  }
 
-    /* ✉️ ENVELOPE */
-    .envelope {
-      width: 360px;
-      height: 240px;
-      background: white;
-      border-radius: 10px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-      cursor: pointer;
-      z-index: 20;
-    }
+  /* ✉️ MOBILE ENVELOPE */
+  .envelope {
+    width: 80vw;
+    max-width: 320px;
+    height: 200px;
+    background: white;
+    border-radius: 12px;
 
-    /* TOP FLAP (REAL OPENING EFFECT) */
-    .flap {
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-left: 180px solid transparent;
-      border-right: 180px solid transparent;
-      border-top: 120px solid #e8d7ff;
-      top: 0;
-      left: 0;
-      transform-origin: top;
-      transition: transform 1s ease;
-      z-index: 25;
-    }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-    /* open animation */
-    .open .flap {
-      transform: rotateX(180deg);
-    }
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    cursor: pointer;
+    z-index: 20;
+  }
 
-    /* HEART */
-    .heart {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background: #d1003f;
-      top: 95px;
-      left: 155px;
-      transform: rotate(45deg);
-      z-index: 30;
-    }
+  /* FLAP */
+  .flap {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 50% solid transparent;
+    border-right: 50% solid transparent;
+    border-top: 100px solid #e8d7ff;
 
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background: #d1003f;
-      border-radius: 50%;
-    }
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform-origin: top;
+    transition: transform 1s ease;
+  }
 
-    .heart::before { top: -25px; left: 0; }
-    .heart::after { left: -25px; top: 0; }
+  .open .flap {
+    transform: rotateX(180deg);
+  }
 
-    /* 💥 EMOJIS */
-    .emoji {
-      position: fixed;
-      font-size: 60px;
-      opacity: 0;
-      transition: all 1.6s ease;
-      z-index: 50;
-      pointer-events: none;
-    }
+  /* ❤️ HEART */
+  .heart {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background: #d1003f;
 
-    /* ❤️ MESSAGE */
-    .message {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 70px;
-      font-weight: bold;
-      color: white;
-      opacity: 0;
-      transition: opacity 1s ease;
-      z-index: 60;
-      text-shadow: 0 0 20px rgba(0,0,0,0.4);
-    }
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+  }
 
-    /* 📄 LETTER */
-    .letter {
-      position: fixed;
-      inset: 0;
-      background: #fffafc;
-      padding: 40px;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-      z-index: 10;
-    }
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background: #d1003f;
+    border-radius: 50%;
+  }
 
-    /* FADE GROUP */
-    .fade-out {
-      opacity: 0 !important;
-      transition: opacity 1.2s ease !important;
-    }
+  .heart::before { top: -22px; left: 0; }
+  .heart::after { left: -22px; top: 0; }
 
-  </style>
+  /* 💥 EMOJIS (MOBILE COVER) */
+  .emoji {
+    position: fixed;
+    font-size: 48px;
+    opacity: 0;
+    transition: all 1.6s ease;
+    z-index: 50;
+    pointer-events: none;
+  }
+
+  /* ❤️ MESSAGE */
+  .message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    opacity: 0;
+    text-align: center;
+    z-index: 60;
+    text-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  /* 📄 LETTER (MOBILE FRIENDLY A4) */
+  .letter {
+    position: fixed;
+    inset: 10px;
+
+    background: #fffafc;
+    border-radius: 14px;
+    padding: 20px;
+    box-sizing: border-box;
+
+    overflow-y: auto;
+
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 1.2s ease;
+
+    box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+    z-index: 10;
+  }
+
+  .show .letter {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .fade {
+    opacity: 0 !important;
+    transition: opacity 1s ease !important;
+  }
+
+</style>
 </head>
 
 <body>
 
-<div class="envelope" onclick="start()">
-  <div class="flap"></div>
-  <div class="heart"></div>
-</div>
+<div id="scene">
 
-<div class="message">I LOVE YOU ❤️</div>
+  <div class="envelope" onclick="start()">
+    <div class="flap"></div>
+    <div class="heart"></div>
+  </div>
 
-<div class="letter">
-  <h1>My Love ❤️</h1>
-  <p>This is everything I want to tell you...</p>
+  <div class="message">I LOVE YOU ❤️</div>
 
-  <h3>100 Things I Love About You</h3>
-  <ul>
-    <li>Your smile</li>
-    <li>Your laugh</li>
-    <li>Your kindness</li>
-  </ul>
+  <div class="letter">
+    <h2>My Love ❤️</h2>
+    <p>This is everything I want to tell you...</p>
+
+    <h3>100 Things I Love</h3>
+    <ul>
+      <li>Your smile</li>
+      <li>Your laugh</li>
+      <li>Your kindness</li>
+    </ul>
+  </div>
+
 </div>
 
 <script>
@@ -145,43 +166,43 @@ function start() {
   if (started) return;
   started = true;
 
-  const env = document.querySelector(".envelope");
-  env.classList.add("open");
+  document.querySelector(".envelope").classList.add("open");
 
-  // create emojis
-  for (let i = 0; i < 120; i++) {
+  // 💥 dense mobile explosion
+  for (let i = 0; i < 140; i++) {
     const e = document.createElement("div");
     e.className = "emoji";
     e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
 
     document.body.appendChild(e);
 
-    e.style.left = Math.random() * window.innerWidth + "px";
-    e.style.top = Math.random() * window.innerHeight + "px";
+    e.style.left = (Math.random() * window.innerWidth) + "px";
+    e.style.top = (Math.random() * window.innerHeight) + "px";
 
     setTimeout(() => {
       e.style.opacity = "1";
-      e.style.transform = "scale(6)";
-    }, 300);
+      e.style.transform = "scale(5.5)";
+    }, 100);
   }
 
-  // show message
+  // message
   setTimeout(() => {
     document.querySelector(".message").style.opacity = "1";
-  }, 600);
+  }, 400);
 
-  // FADE EVERYTHING TOGETHER
+  // fade everything
   setTimeout(() => {
-    document.querySelectorAll(".emoji").forEach(e => {
-      e.classList.add("fade-out");
-    });
+    document.querySelector(".envelope").classList.add("fade");
+    document.querySelector(".message").classList.add("fade");
 
-    document.querySelector(".message").classList.add("fade-out");
+    document.querySelectorAll(".emoji").forEach(e => {
+      e.classList.add("fade");
+    });
   }, 1800);
 
-  // reveal letter AFTER fade
+  // reveal letter
   setTimeout(() => {
-    document.querySelector(".letter").style.opacity = "1";
+    document.getElementById("scene").classList.add("show");
   }, 3000);
 }
 </script>
