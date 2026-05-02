@@ -12,21 +12,6 @@
     font-family: Arial;
   }
 
-  /* 💗 BACKGROUND HEARTS */
-  .bg-heart {
-    position: fixed;
-    z-index: 1;
-    pointer-events: none;
-    color: rgba(255, 0, 80, 0.25);
-    font-size: 18px;
-    animation: floatUp linear infinite;
-  }
-
-  @keyframes floatUp {
-    from { transform: translateY(100vh); }
-    to { transform: translateY(-10vh); }
-  }
-
   /* ✉️ ENVELOPE */
   .envelope {
     width: 80vw;
@@ -51,24 +36,36 @@
     }
   }
 
+  /* 🧱 BODY (REAL ENVELOPE BASE) */
   .body {
     width: 100%;
     height: 100%;
     background: white;
-    border-radius: 10px;
     position: absolute;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    border-radius: 6px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+
+    /* envelope X fold lines */
+    background-image:
+      linear-gradient(135deg, transparent 49%, #ddd 50%, transparent 51%),
+      linear-gradient(225deg, transparent 49%, #ddd 50%, transparent 51%);
   }
 
+  /* 🔺 FLAP (REAL OPENING LID) */
   .flap {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 50%;
+    top: 0;
+    left: 0;
+
     background: white;
-    clip-path: polygon(0 0, 100% 0, 50% 55%);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
     transform-origin: top;
-    transition: transform 1s ease;
+    transition: transform 0.9s ease;
+
     z-index: 3;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
   }
 
   .open .flap {
@@ -78,7 +75,7 @@
   /* ❤️ HEART */
   .center-heart {
     position: absolute;
-    top: 55%;
+    top: 42%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
     width: 45px;
@@ -108,10 +105,10 @@
   .center-heart::before { top: -22px; left: 0; }
   .center-heart::after { left: -22px; top: 0; }
 
-  /* 📝 TEXT NOW ON ENVELOPE */
+  /* 📝 TEXT (LOWERED) */
   .subtitle {
     position: absolute;
-    top: 70%;
+    top: 78%; /* LOWER than before */
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 14px;
@@ -155,29 +152,16 @@
 
 <body>
 
-<!-- 💗 BACKGROUND HEARTS -->
-<script>
-for (let i = 0; i < 18; i++) {
-  const h = document.createElement("div");
-  h.className = "bg-heart";
-  h.innerText = "❤️";
-
-  h.style.left = Math.random() * 100 + "vw";
-  h.style.animationDuration = (6 + Math.random() * 6) + "s";
-  h.style.fontSize = (16 + Math.random() * 18) + "px";
-
-  document.body.appendChild(h);
-}
-</script>
-
 <!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="start()">
+
   <div class="body"></div>
   <div class="flap"></div>
+
   <div class="center-heart"></div>
 
-  <!-- 📝 TEXT ON ENVELOPE -->
   <div class="subtitle">for someone special</div>
+
 </div>
 
 <!-- 📄 LETTER -->
@@ -227,8 +211,7 @@ function start() {
 
   setTimeout(() => {
     envelope.style.opacity = "0";
-    document.querySelector(".subtitle").style.opacity = "0";
-  }, 800);
+  }, 900);
 
   setTimeout(() => {
     document.querySelectorAll(".particle").forEach(p => {
