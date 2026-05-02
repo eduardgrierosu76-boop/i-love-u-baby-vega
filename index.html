@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>For You ❤️</title>
+  <style>
+    body {
+      background: #ffe4ec;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial;
+    }
+
+    .envelope {
+      width: 250px;
+      height: 150px;
+      background: #ff8fa3;
+      position: relative;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .letter {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 0;
+      overflow: hidden;
+      background: white;
+      transition: 0.6s;
+      padding: 0 15px;
+      box-sizing: border-box;
+    }
+
+    .envelope.open .letter {
+      height: 300px;
+      padding: 15px;
+    }
+
+    h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="envelope" onclick="openLetter(this)">
+  <div class="letter">
+    <h3>My Love 💖</h3>
+    <p>
+      This is where your love letter will go...
+    </p>
+
+    <h4>100 Things I Love About You</h4>
+    <ul>
+      <li>Your smile</li>
+      <li>Your laugh</li>
+      <li>The way you care</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+function openLetter(el) {
+  el.classList.toggle("open");
+}
+</script>
+
+</body>
+</html>
