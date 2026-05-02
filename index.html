@@ -5,179 +5,169 @@
 <title>For You ❤️</title>
 
 <style>
-  body {
-    margin: 0;
-    overflow: hidden;
-    background: #f7e9ff;
-    font-family: Arial;
-  }
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #f7e9ff;
+  font-family: Arial;
+}
 
-  /* 💗 BACKGROUND HEARTS */
-  .bg-heart {
-    position: fixed;
-    z-index: 1;
-    pointer-events: none;
-    color: rgba(255, 0, 80, 0.25);
-    font-size: 18px;
-    animation: floatUp linear infinite;
-  }
+/* 💗 BACKGROUND HEARTS */
+.bg-heart {
+  position: fixed;
+  z-index: 1;
+  pointer-events: none;
+  color: rgba(255, 0, 80, 0.25);
+  font-size: 18px;
+  animation: floatUp linear infinite;
+}
 
-  @keyframes floatUp {
-    from { transform: translateY(100vh); }
-    to { transform: translateY(-10vh); }
-  }
+@keyframes floatUp {
+  from { transform: translateY(100vh); }
+  to { transform: translateY(-10vh); }
+}
 
-  /* ✉️ ENVELOPE */
-  .envelope {
-    width: 80vw;
-    max-width: 320px;
-    height: 200px;
+/* ✉️ CENTER ENVELOPE */
+.envelope {
+  width: 320px;
+  height: 200px;
 
-    position: absolute;
-    left: 50%;
-    top: 110%;
-    transform: translateX(-50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
-    cursor: pointer;
-    z-index: 50;
+  cursor: pointer;
+  z-index: 50;
+}
 
-    animation: slideUp 1.2s ease forwards;
-  }
+/* 🧱 BODY */
+.body {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 8px;
+  position: absolute;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
 
-  @keyframes slideUp {
-    to {
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
+/* ✉️ FLAP (REAL TOP TRIANGLE) */
+.flap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: white;
 
-  /* 🧱 BODY */
-  .body {
-    width: 100%;
-    height: 100%;
-    background: white;
-    border-radius: 10px;
-    position: absolute;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-    overflow: hidden;
-  }
+  clip-path: polygon(0 0, 100% 0, 50% 55%);
+  transform-origin: top;
+  transition: transform 1s ease;
+  z-index: 3;
+}
 
-  /* ✉️ CLEAN “\/” FOLD LINES */
-  .body::before,
-  .body::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: transparent;
-  }
+.open .flap {
+  transform: rotateX(-180deg);
+}
 
-  /* left side \ */
-  .body::before {
-    background: linear-gradient(135deg,
-      transparent 49%,
-      #d8c8d8 50%,
-      transparent 51%
-    );
-  }
+/* ✉️ CLEAN V LINES */
+.body::before,
+.body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
 
-  /* right side / */
-  .body::after {
-    background: linear-gradient(225deg,
-      transparent 49%,
-      #d8c8d8 50%,
-      transparent 51%
-    );
-  }
+/* left diagonal \ */
+.body::before {
+  background: linear-gradient(135deg,
+    transparent 49%,
+    #d8c8d8 50%,
+    transparent 51%
+  );
+}
 
-  /* 🔺 FLAP */
-  .flap {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: white;
-    clip-path: polygon(0 0, 100% 0, 50% 55%);
-    transform-origin: top;
-    transition: transform 1s ease;
-    z-index: 3;
-  }
+/* right diagonal / */
+.body::after {
+  background: linear-gradient(225deg,
+    transparent 49%,
+    #d8c8d8 50%,
+    transparent 51%
+  );
+}
 
-  .open .flap {
-    transform: rotateX(-180deg);
-  }
+/* ❤️ HEART */
+.center-heart {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 45px;
+  height: 45px;
+  background: #d1003f;
+  z-index: 5;
+  animation: pulse 1.2s infinite ease-in-out;
+}
 
-  /* ❤️ HEART */
-  .center-heart {
-    position: absolute;
-    top: 42%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-    width: 45px;
-    height: 45px;
-    background: #d1003f;
-    z-index: 5;
-    animation: pulse 1.2s infinite ease-in-out;
-  }
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+  50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.2); }
+  100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+}
 
-  @keyframes pulse {
-    0%   { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
-    50%  { transform: translate(-50%, -50%) rotate(45deg) scale(1.2); }
-    100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
-  }
+.center-heart::before,
+.center-heart::after {
+  content: "";
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  background: #d1003f;
+  border-radius: 50%;
+}
 
-  .center-heart::before,
-  .center-heart::after {
-    content: "";
-    position: absolute;
-    width: 45px;
-    height: 45px;
-    background: #d1003f;
-    border-radius: 50%;
-  }
+.center-heart::before { top: -22px; left: 0; }
+.center-heart::after { left: -22px; top: 0; }
 
-  .center-heart::before { top: -22px; left: 0; }
-  .center-heart::after { left: -22px; top: 0; }
+/* 📝 TEXT */
+.subtitle {
+  position: absolute;
+  top: 78%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #7a4a6a;
+  z-index: 6;
+}
 
-  /* 📝 TEXT */
-  .subtitle {
-    position: absolute;
-    top: 86%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 14px;
-    color: #7a4a6a;
-    z-index: 6;
-    pointer-events: none;
-  }
+/* 💥 EMOJIS */
+.particle {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 1.6s ease, opacity 2s ease;
+}
 
-  /* 💥 EMOJIS */
-  .particle {
-    position: fixed;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0;
-    transition: transform 1.6s ease, opacity 2s ease;
-  }
+/* 📄 LETTER */
+.letter {
+  position: fixed;
+  inset: 12px;
+  background: #fffafc;
+  border-radius: 14px;
+  padding: 20px;
 
-  /* 📄 LETTER */
-  .letter {
-    position: fixed;
-    inset: 12px;
-    background: #fffafc;
-    border-radius: 14px;
-    padding: 20px;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: 1.2s ease;
 
-    opacity: 0;
-    transform: scale(0.85);
-    transition: 1.2s ease;
+  z-index: 100000;
+  pointer-events: none;
+}
 
-    z-index: 100000;
-    pointer-events: none;
-  }
-
-  .show .letter {
-    opacity: 1;
-    transform: scale(1);
-  }
+.show .letter {
+  opacity: 1;
+  transform: scale(1);
+}
 
 </style>
 </head>
