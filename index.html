@@ -17,7 +17,7 @@
       text-align: center;
     }
 
-    /* ENVELOPE BASE */
+    /* ENVELOPE */
     .envelope {
       position: relative;
       width: 320px;
@@ -29,16 +29,15 @@
       overflow: hidden;
     }
 
-    /* HEART (CENTER PIECE) */
+    /* HEART (RED) */
     .heart {
       position: absolute;
       width: 40px;
       height: 40px;
-      background: white;
+      background: #e60026;
       top: 80px;
       left: 140px;
       transform: rotate(45deg);
-      transition: 0.4s;
       z-index: 3;
     }
 
@@ -48,7 +47,7 @@
       position: absolute;
       width: 40px;
       height: 40px;
-      background: white;
+      background: #e60026;
       border-radius: 50%;
     }
 
@@ -70,7 +69,7 @@
       z-index: 4;
     }
 
-    /* PAPER */
+    /* PAPER (START INSIDE) */
     .paper {
       position: absolute;
       width: 280px;
@@ -78,29 +77,34 @@
       background: white;
       left: 20px;
       bottom: -380px;
-      transition: 0.7s ease;
+      transition: 0.8s ease;
       padding: 15px;
       box-sizing: border-box;
       z-index: 2;
       border-radius: 5px;
+      overflow-y: auto;
     }
 
-    /* STAGE 1 (opened envelope) */
+    /* STAGE 1 */
     .stage1 .flap {
       transform: rotateX(180deg);
     }
 
     .stage1 .paper {
-      bottom: -200px; /* just peeking */
+      bottom: -150px; /* peek out */
     }
 
-    /* STAGE 2 (fully out) */
+    /* STAGE 2 (FULL OUT) */
     .stage2 .paper {
-      bottom: 10px;
+      bottom: 220px; /* fully outside envelope */
     }
 
     .hint {
       margin-top: 15px;
+    }
+
+    ul {
+      text-align: left;
     }
   </style>
 </head>
@@ -113,7 +117,7 @@
     <div class="heart"></div>
 
     <div class="paper">
-      <h2>My Love 💖</h2>
+      <h2>My Love ❤️</h2>
       <p>This is everything I want you to know...</p>
 
       <h3>100 Things I Love About You</h3>
@@ -125,7 +129,7 @@
     </div>
   </div>
 
-  <p class="hint">Click once to open, click again to reveal 💌</p>
+  <p class="hint">Click once to open, click again to release 💌</p>
 </div>
 
 <script>
