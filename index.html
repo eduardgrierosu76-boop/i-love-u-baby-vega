@@ -14,6 +14,21 @@
 
   audio { display: none; }
 
+  /* 💗 BACKGROUND HEARTS */
+  .bg-heart {
+    position: fixed;
+    color: rgba(255, 0, 80, 0.25);
+    font-size: 20px;
+    z-index: 0;
+    pointer-events: none;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+  }
+
   /* ✉️ ENVELOPE */
   .envelope {
     width: 80vw;
@@ -27,7 +42,6 @@
 
     cursor: pointer;
     z-index: 100;
-    perspective: 1000px;
   }
 
   .body {
@@ -39,22 +53,19 @@
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
   }
 
-  /* ✉️ FIXED FOLD LINES (UPWARD CLEAN TRIANGLE STYLE) */
+  /* fold lines */
   .body::before {
     content: "";
     position: absolute;
     width: 100%;
     height: 100%;
-
-    /* FIX: proper envelope “X fold” aligned correctly */
     background:
       linear-gradient(to bottom right, transparent 49%, #ddd 50%, transparent 51%),
       linear-gradient(to bottom left, transparent 49%, #ddd 50%, transparent 51%);
-
     opacity: 0.6;
   }
 
-  /* 🔺 FLAP */
+  /* 🔺 FLAP (REAL OPENING) */
   .flap {
     position: absolute;
     width: 100%;
@@ -62,11 +73,9 @@
     background: white;
     clip-path: polygon(0 0, 100% 0, 50% 55%);
     transform-origin: top;
-
     transform: rotateX(0deg);
-    transition: transform 1.2s ease;
+    transition: transform 1s ease;
     z-index: 3;
-    backface-visibility: hidden;
   }
 
   .open .flap {
@@ -98,13 +107,13 @@
   .center-heart::before { top: -22px; left: 0; }
   .center-heart::after { left: -22px; top: 0; }
 
-  /* 💥 PARTICLES */
+  /* 💥 EMOJIS */
   .particle {
     position: fixed;
-    z-index: 10;
+    z-index: 20;
     pointer-events: none;
     opacity: 0;
-    transition: transform 1.4s ease, opacity 1.4s ease;
+    transition: transform 1.5s ease, opacity 2s ease;
   }
 
   /* 📄 LETTER */
@@ -117,6 +126,7 @@
 
     opacity: 0;
     transform: scale(0.85);
+
     transition: all 1.2s ease;
 
     box-shadow: 0 30px 80px rgba(0,0,0,0.35);
@@ -137,6 +147,21 @@
 <audio id="bgm" loop>
   <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1b5b1c3b1.mp3">
 </audio>
+
+<!-- 💗 BACKGROUND HEARTS -->
+<script>
+for (let i = 0; i < 18; i++) {
+  const h = document.createElement("div");
+  h.className = "bg-heart";
+  h.innerText = "❤️";
+
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.animationDuration = (6 + Math.random() * 6) + "s";
+  h.style.fontSize = (18 + Math.random() * 20) + "px";
+
+  document.body.appendChild(h);
+}
+</script>
 
 <!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="start()">
@@ -163,13 +188,13 @@ function start() {
 
   const rect = envelope.getBoundingClientRect();
 
-  /* 💥 FIX: EMOJIS COME FROM INSIDE ENVELOPE */
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
 
-  const emojis = ["❤️","💋","💖"];
+  const emojis = ["❤️","💋","💖","💞","❤️"];
 
-  for (let i = 0; i < 70; i++) {
+  /* 💥 STEP 1: POUR OUT EMOJIS */
+  for (let i = 0; i < 80; i++) {
 
     const p = document.createElement("div");
     p.className = "particle";
@@ -177,14 +202,13 @@ function start() {
 
     document.body.appendChild(p);
 
-    /* START INSIDE ENVELOPE */
+    /* start INSIDE envelope */
     p.style.left = cx + "px";
     p.style.top = cy + "px";
 
-    const size = 130 + Math.random() * 220;
+    const size = 120 + Math.random() * 240;
     p.style.fontSize = size + "px";
 
-    /* BURST OUTWARD */
     const angle = Math.random() * Math.PI * 2;
     const dist = 300 + Math.random() * 700;
 
@@ -194,13 +218,21 @@ function start() {
     setTimeout(() => {
       p.style.opacity = "1";
       p.style.transform = `translate(${dx}px, ${dy}px) scale(1.6)`;
-    }, 60);
+    }, 100);
   }
 
-  /* 📄 SHOW LETTER */
+  /* 🌫️ STEP 2: FADE EMOJIS */
+  setTimeout(() => {
+    document.querySelectorAll(".particle").forEach(p => {
+      p.style.opacity = "0";
+    });
+  }, 2000);
+
+  /* 📄 STEP 3: SHOW LETTER */
   setTimeout(() => {
     document.body.classList.add("show");
-  }, 2500);
+  }, 3200);
+
 }
 
 </script>
