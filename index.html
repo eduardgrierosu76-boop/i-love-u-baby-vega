@@ -27,7 +27,7 @@
     to { transform: translateY(-10vh); }
   }
 
-  /* ✉️ ENVELOPE WRAPPER */
+  /* ✉️ ENVELOPE */
   .envelope {
     width: 80vw;
     max-width: 320px;
@@ -51,6 +51,7 @@
     }
   }
 
+  /* 🧱 BODY */
   .body {
     width: 100%;
     height: 100%;
@@ -58,8 +59,13 @@
     border-radius: 10px;
     position: absolute;
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+
+    background-image:
+      linear-gradient(135deg, transparent 49%, #ddd 50%, transparent 51%),
+      linear-gradient(225deg, transparent 49%, #ddd 50%, transparent 51%);
   }
 
+  /* 🔺 FLAP */
   .flap {
     position: absolute;
     width: 100%;
@@ -75,10 +81,27 @@
     transform: rotateX(-180deg);
   }
 
+  /* ✉️ TOP SEAL LINES (NEW) */
+  .seal-line {
+    position: absolute;
+    width: 70%;
+    height: 2px;
+    background: #d8c8d8;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  .seal-line:nth-child(2) {
+    top: 22px;
+    width: 50%;
+  }
+
   /* ❤️ HEART */
   .center-heart {
     position: absolute;
-    top: 55%;
+    top: 42%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
     width: 45px;
@@ -108,10 +131,10 @@
   .center-heart::before { top: -22px; left: 0; }
   .center-heart::after { left: -22px; top: 0; }
 
-  /* 📝 TEXT NOW INSIDE ENVELOPE */
+  /* 📝 TEXT (LOWERED MORE) */
   .subtitle {
     position: absolute;
-    top: 72%; /* under heart */
+    top: 86%;   /* LOWER than before */
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 14px;
@@ -173,12 +196,15 @@ for (let i = 0; i < 18; i++) {
 <!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="start()">
 
+  <!-- top seal lines -->
+  <div class="seal-line"></div>
+  <div class="seal-line"></div>
+
   <div class="body"></div>
   <div class="flap"></div>
 
   <div class="center-heart"></div>
 
-  <!-- 📝 TEXT INSIDE ENVELOPE -->
   <div class="subtitle">for someone special</div>
 
 </div>
@@ -202,6 +228,7 @@ function start() {
 
   const emojis = ["❤️","💋","💖","💞","💘"];
 
+  /* 💥 EMOJIS BURST */
   for (let i = 0; i < 100; i++) {
 
     const p = document.createElement("div");
@@ -228,16 +255,19 @@ function start() {
     }, 80);
   }
 
+  /* 💌 hide envelope */
   setTimeout(() => {
     envelope.style.opacity = "0";
-  }, 800);
+  }, 900);
 
+  /* 🌫 fade emojis */
   setTimeout(() => {
     document.querySelectorAll(".particle").forEach(p => {
       p.style.opacity = "0";
     });
   }, 2200);
 
+  /* 📄 show letter */
   setTimeout(() => {
     document.body.classList.add("show");
   }, 3200);
