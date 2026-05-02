@@ -6,7 +6,7 @@
     body {
       margin: 0;
       height: 100vh;
-      background: #ffe4ec;
+      background: #f7e9ff; /* softer romantic tone */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -17,106 +17,113 @@
       text-align: center;
     }
 
-    /* ENVELOPE (PURE WHITE) */
+    /* ENVELOPE */
     .envelope {
       position: relative;
       width: 340px;
       height: 220px;
       background: #ffffff;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
       overflow: hidden;
+      transition: transform 0.6s ease;
     }
 
-    /* FLAP (ALSO WHITE - NO PINK ANYWHERE) */
+    /* FLAP */
     .flap {
       position: absolute;
       width: 0;
       height: 0;
       border-left: 170px solid transparent;
       border-right: 170px solid transparent;
-      border-top: 120px solid #ffffff;
+      border-top: 120px solid #e8d7ff; /* soft romantic lavender */
       top: 0;
       left: 0;
       transform-origin: top;
       transition: 0.6s ease;
-      z-index: 3;
-      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.05);
+      z-index: 2;
     }
 
-    /* HEART (ONLY FRONT DECORATION) */
+    /* HEART (TOP MOST LAYER ALWAYS FIRST) */
     .heart {
       position: absolute;
-      width: 50px;
-      height: 50px;
-      background: #e60026;
-      top: 85px;
-      left: 145px;
+      width: 55px;
+      height: 55px;
+      background: #d1003f;
+      top: 82px;
+      left: 142px;
       transform: rotate(45deg);
-      z-index: 4;
-      transition: opacity 0.3s ease;
+      z-index: 999; /* ALWAYS ON TOP */
+      transition: opacity 0.4s ease;
     }
 
     .heart::before,
     .heart::after {
       content: "";
       position: absolute;
-      width: 50px;
-      height: 50px;
-      background: #e60026;
+      width: 55px;
+      height: 55px;
+      background: #d1003f;
       border-radius: 50%;
     }
 
-    .heart::before { top: -25px; left: 0; }
-    .heart::after { left: -25px; top: 0; }
+    .heart::before { top: -27px; left: 0; }
+    .heart::after { left: -27px; top: 0; }
 
-    /* PAPER (COMPLETELY HIDDEN AT START) */
+    /* PAPER (START SMALL INSIDE) */
     .paper {
       position: absolute;
-      width: 280px;
-      height: 380px;
-      background: white;
-      left: 30px;
-      top: 220px; /* fully INSIDE envelope */
-      border-radius: 8px;
+      width: 260px;
+      height: 320px;
+      background: #fffafc;
+      left: 40px;
+      top: 220px;
+      border-radius: 10px;
       padding: 15px;
       box-sizing: border-box;
-      transition: 0.8s ease;
+      transition: all 0.9s ease;
       z-index: 1;
       overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
 
-    /* STAGE 1: OPEN FLAP + START PAPER EXIT */
+    /* STAGE 1: OPEN ENVELOPE */
     .stage1 .flap {
       transform: rotateX(180deg);
     }
 
     .stage1 .paper {
-      top: 40px; /* peeking out */
+      top: 30px;
     }
 
-    /* STAGE 2: FULL PAPER OUT */
+    /* STAGE 2: FULL SCREEN REVEAL */
     .stage2 .paper {
-      top: -150px;
+      position: fixed;
+      top: 5%;
+      left: 5%;
+      width: 90vw;
+      height: 90vh;
+      z-index: 10;
     }
 
-    /* HEART DISAPPEARS ONLY WHEN FULL OPEN */
+    /* HEART DISAPPEARS AFTER FIRST CLICK */
+    .stage1 .heart,
     .stage2 .heart {
       opacity: 0;
     }
 
     h2 {
-      margin: 0;
+      margin-top: 0;
     }
 
     ul {
       text-align: left;
-      padding-left: 15px;
     }
 
     .hint {
       margin-top: 15px;
+      color: #444;
     }
   </style>
 </head>
@@ -131,7 +138,7 @@
 
     <div class="paper">
       <h2>My Love ❤️</h2>
-      <p>This is everything I want you to know...</p>
+      <p>This is everything I feel for you...</p>
 
       <h3>100 Things I Love</h3>
       <ul>
@@ -143,7 +150,7 @@
 
   </div>
 
-  <p class="hint">Click once → open, click again → reveal 💌</p>
+  <p class="hint">Click → open → full reveal 💌</p>
 </div>
 
 <script>
