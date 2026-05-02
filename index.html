@@ -58,7 +58,7 @@ body {
   z-index: 1;
 }
 
-/* 🧩 INNER FILL (fixes gaps) */
+/* 🧩 INNER FILL */
 .inner-fill {
   position: absolute;
   width: 100%;
@@ -142,25 +142,40 @@ body {
   transition: transform 1.6s ease, opacity 2s ease;
 }
 
-/* 📄 LETTER */
+/* 📄 LETTER (A4 STYLE) */
 .letter {
   position: fixed;
   inset: 12px;
-  background: #fffafc;
-  border-radius: 14px;
-  padding: 20px;
+  background: #fffdf8;
+  border-radius: 12px;
+  padding: 24px;
 
   opacity: 0;
   transform: scale(0.85);
+
   transition: 1.2s ease;
 
   z-index: 100000;
   pointer-events: none;
+
+  overflow-y: auto;
+
+  box-shadow: 0 30px 80px rgba(0,0,0,0.25);
 }
 
 .show .letter {
   opacity: 1;
   transform: scale(1);
+}
+
+/* 📄 LETTER TEXT */
+.letter h2 {
+  margin-bottom: 20px;
+}
+
+.letter p {
+  line-height: 1.6;
+  margin-bottom: 14px;
 }
 </style>
 </head>
@@ -198,8 +213,43 @@ for (let i = 0; i < 18; i++) {
 
 <!-- 📄 LETTER -->
 <div class="letter">
-  <h2>My Love ❤️</h2>
-  <p>This is everything I want to tell you...</p>
+
+  <h2>something you need to know:</h2>
+
+  <p>
+    Hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero una cosa que sé con seguridad es que te amo y que, sin importar cómo se vea mi futuro, quiero que sea contigo.
+  </p>
+
+  <p>
+    Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.
+  </p>
+
+  <p>
+    Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.
+  </p>
+
+  <p>
+    He estado perdido por un tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo, y sin importar cómo se vea mi futuro, quiero que sea contigo.
+  </p>
+
+  <p>
+    Y tal vez no lo demuestre lo suficiente, pero me importas, y siempre voy a estar aquí para ti. Cuando solo veas oscuridad, voy a estar aquí para mostrarte la luz.
+  </p>
+
+  <p>
+    Eres perfecta, mi amor. Sueño contigo cada noche. Si Dios creó la perfección, eres tú.
+  </p>
+
+  <p><b>Y aquí tienes 100 cosas que amo de ti…</b></p>
+
+  <p>
+    (…your full list stays here…)
+  </p>
+
+  <p><b>
+    I love you Briana, and I can't wait to just show how much I love you through actions.
+  </b></p>
+
 </div>
 
 </div>
@@ -217,7 +267,6 @@ function openEnvelope() {
 
   const emojis = ["❤️","💖","💘","💞","💋","💐"];
 
-  // ⏳ wait for flap open
   setTimeout(() => {
 
     for (let i = 0; i < 120; i++) {
@@ -248,19 +297,16 @@ function openEnvelope() {
 
   }, 900);
 
-  // 💌 hide envelope
   setTimeout(() => {
     envelope.style.opacity = "0";
   }, 1700);
 
-  // 🌫 fade emojis
   setTimeout(() => {
     document.querySelectorAll(".particle").forEach(p => {
       p.style.opacity = "0";
     });
   }, 3000);
 
-  // 📄 show letter
   setTimeout(() => {
     document.body.classList.add("show");
   }, 4200);
