@@ -12,6 +12,21 @@
     font-family: Arial;
   }
 
+  /* 💗 BACKGROUND FLOATING HEARTS */
+  .bg-heart {
+    position: fixed;
+    z-index: 1;
+    pointer-events: none;
+    color: rgba(255, 0, 80, 0.25);
+    font-size: 20px;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+  }
+
   /* ✉️ ENVELOPE */
   .envelope {
     width: 80vw;
@@ -24,7 +39,7 @@
     transform: translate(-50%, -50%);
 
     cursor: pointer;
-    z-index: 10;
+    z-index: 50;
     transition: opacity 0.6s ease;
   }
 
@@ -52,7 +67,6 @@
     transform: rotateX(-180deg);
   }
 
-  /* fold lines */
   .flap::before {
     content: "";
     position: absolute;
@@ -64,7 +78,7 @@
     opacity: 0.5;
   }
 
-  /* ❤️ HEART */
+  /* ❤️ CENTER HEART (NOW BREAKS) */
   .center-heart {
     position: absolute;
     top: 55%;
@@ -73,7 +87,8 @@
     width: 45px;
     height: 45px;
     background: #d1003f;
-    z-index: 4;
+    z-index: 5;
+    transition: transform 0.8s ease, opacity 0.8s ease;
   }
 
   .center-heart::before,
@@ -89,7 +104,13 @@
   .center-heart::before { top: -22px; left: 0; }
   .center-heart::after { left: -22px; top: 0; }
 
-  /* 💥 FULL SCREEN EMOJIS */
+  /* 💔 broken effect */
+  .open .center-heart {
+    transform: translate(-50%, -50%) rotate(45deg) scale(0) rotate(720deg);
+    opacity: 0;
+  }
+
+  /* 💥 EMOJIS */
   .particle {
     position: fixed;
     z-index: 9999;
@@ -98,7 +119,7 @@
     transition: transform 1.6s ease, opacity 2s ease;
   }
 
-  /* 📄 LETTER (FINAL SCENE) */
+  /* 📄 LETTER */
   .letter {
     position: fixed;
     inset: 12px;
@@ -123,6 +144,21 @@
 </head>
 
 <body>
+
+<!-- 💗 BACKGROUND HEARTS -->
+<script>
+for (let i = 0; i < 18; i++) {
+  const h = document.createElement("div");
+  h.className = "bg-heart";
+  h.innerText = "❤️";
+
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.animationDuration = (6 + Math.random() * 6) + "s";
+  h.style.fontSize = (16 + Math.random() * 18) + "px";
+
+  document.body.appendChild(h);
+}
+</script>
 
 <!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="start()">
@@ -150,7 +186,7 @@ function start() {
 
   const emojis = ["❤️","💋","💖","💞","💘"];
 
-  /* 💥 EMOJIS COVER FULL SCREEN */
+  /* 💥 EMOJIS FROM INSIDE */
   for (let i = 0; i < 100; i++) {
 
     const p = document.createElement("div");
@@ -159,7 +195,6 @@ function start() {
 
     document.body.appendChild(p);
 
-    /* start INSIDE envelope */
     p.style.left = cx + "px";
     p.style.top = cy + "px";
 
@@ -178,19 +213,19 @@ function start() {
     }, 80);
   }
 
-  /* 💡 HIDE ENVELOPE AFTER OPENING */
+  /* 💌 hide envelope */
   setTimeout(() => {
     envelope.style.opacity = "0";
   }, 800);
 
-  /* 🌫 FADE EMOJIS */
+  /* 🌫 fade emojis */
   setTimeout(() => {
     document.querySelectorAll(".particle").forEach(p => {
       p.style.opacity = "0";
     });
   }, 2200);
 
-  /* 📄 SHOW LETTER ONLY */
+  /* 📄 show letter */
   setTimeout(() => {
     document.body.classList.add("show");
   }, 3200);
