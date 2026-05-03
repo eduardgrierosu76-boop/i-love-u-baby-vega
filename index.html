@@ -5,37 +5,22 @@
 <title>For You ❤️</title>
 
 <style>
-
 body {
   margin: 0;
   overflow: hidden;
   font-family: Arial;
   touch-action: manipulation;
 
-  /* 💜 FULL BACKGROUND (BEHIND EVERYTHING) */
-  background: radial-gradient(circle at top,
-    #6a2a8a 0%,
-    #2a0b3d 45%,
-    #0a0014 100%);
+  /* 💜 PURPLE DREAM BACKGROUND */
+  background: radial-gradient(circle at top, #3b0a57, #120018 70%);
 }
 
-/* 🌟 soft glow overlay */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at 50% 40%,
-    rgba(255, 120, 255, 0.18),
-    transparent 60%);
-  pointer-events: none;
-}
-
-/* 💗 FLOATING BACKGROUND HEARTS */
+/* 💗 BACKGROUND HEARTS */
 .bg-heart {
   position: fixed;
   z-index: 1;
   pointer-events: none;
-  color: rgba(255, 170, 255, 0.25);
+  color: rgba(255, 255, 255, 0.18);
   font-size: 18px;
   animation: floatUp linear infinite;
 }
@@ -54,20 +39,63 @@ body::before {
   top: 50%;
   transform: translate(-50%, -50%);
   cursor: pointer;
-
-  /* 🌟 floating shadow */
-  filter: drop-shadow(0 25px 45px rgba(0,0,0,0.55));
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.4));
 }
 
-/* BASE */
 .base {
   position: absolute;
   width: 100%;
   height: 100%;
   background: #fff;
-  border: 2px solid #e6d6df;
   border-radius: 8px;
   z-index: 1;
+}
+
+.bottom-flap, .left-flap, .right-flap, .flap {
+  position: absolute;
+  background: #f7f0ff;
+}
+
+/* lower */
+.bottom-flap {
+  bottom: 0;
+  width: 100%;
+  height: 55%;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  z-index: 2;
+}
+
+/* sides */
+.left-flap {
+  width: 50%;
+  height: 100%;
+  left: 0;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  z-index: 2;
+}
+
+.right-flap {
+  width: 50%;
+  height: 100%;
+  right: 0;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  z-index: 2;
+}
+
+/* top */
+.flap {
+  top: 0;
+  width: 100%;
+  height: 60%;
+  background: #ffffff;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform 1s ease;
+  z-index: 3;
+}
+
+.open .flap {
+  transform: rotateX(-170deg);
 }
 
 /* ❤️ HEART */
@@ -78,7 +106,7 @@ body::before {
   transform: translate(-50%, -50%) rotate(45deg);
   width: 55px;
   height: 55px;
-  background: #d1003f;
+  background: #ff2e6a;
   z-index: 5;
   animation: pulse 1.2s infinite;
 }
@@ -89,7 +117,7 @@ body::before {
   position: absolute;
   width: 55px;
   height: 55px;
-  background: #d1003f;
+  background: #ff2e6a;
   border-radius: 50%;
 }
 
@@ -109,7 +137,7 @@ body::before {
   left: 50%;
   transform: translateX(-50%);
   font-size: 14px;
-  color: #7a4a6a;
+  color: #ffffff;
   z-index: 6;
 }
 
@@ -122,15 +150,13 @@ body::before {
   transition: transform 1.6s ease, opacity 2s ease;
 }
 
-/* 💌 LETTER (MATCHES BACKGROUND STYLE NOW) */
+/* 📄 LETTER */
 .letter {
   position: fixed;
   inset: 0;
 
-  background: radial-gradient(circle at top left,
-    #ffe9f6 0%,
-    #f3e6ff 50%,
-    #e7dcff 100%);
+  /* 💜 SOFT PURPLE PAPER */
+  background: linear-gradient(135deg, #f4e9ff, #e9d7ff);
 
   padding: 28px;
   opacity: 0;
@@ -139,40 +165,49 @@ body::before {
 
   z-index: 100000;
   overflow-y: auto;
-  pointer-events: none;
 
-  box-shadow: inset 0 0 80px rgba(140, 0, 200, 0.2);
+  pointer-events: none;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4);
 }
 
-/* 🌸 floating decoration (SUBTLE, behind text) */
-.letter::before {
-  content: "🌸 💜 ✨ 🌸 💜 ✨ 🌸 💜 ✨ 🌸 💜 ✨ 🌸 💜 ✨";
-  position: absolute;
-  inset: 0;
-  font-size: 30px;
-  opacity: 0.07;
-  line-height: 2.3;
-  pointer-events: none;
-}
-
-/* SHOW LETTER */
 .show .letter {
   opacity: 1;
   transform: scale(1);
   pointer-events: auto;
 }
 
-.letter h2,
-.letter p {
+/* 📄 TEXT ABOVE DECOR */
+.letter h2, .letter p {
   position: relative;
   z-index: 2;
 }
 
 .letter p {
   line-height: 1.7;
+  margin-bottom: 14px;
   font-size: 15px;
 }
 
+/* 🌸 LETTER DECOR EMOJIS */
+.letter-decor {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.letter-decor span {
+  position: absolute;
+  font-size: 22px;
+  opacity: 0.18;
+  animation: floatSoft 10s linear infinite;
+}
+
+@keyframes floatSoft {
+  from { transform: translateY(100px); }
+  to { transform: translateY(-200px); }
+}
 </style>
 </head>
 
@@ -194,6 +229,11 @@ for (let i = 0; i < 18; i++) {
 <!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="openEnvelope()">
   <div class="base"></div>
+  <div class="bottom-flap"></div>
+  <div class="left-flap"></div>
+  <div class="right-flap"></div>
+  <div class="flap"></div>
+
   <div class="heart"></div>
   <div class="text">for someone special</div>
 </div>
@@ -201,11 +241,20 @@ for (let i = 0; i < 18; i++) {
 <!-- 📄 LETTER -->
 <div class="letter">
 
+<div class="letter-decor" id="decor"></div>
+
 <h2>something you need to know:</h2>
 
-<p>Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado...</p>
+<!-- YOUR TEXT (UNCHANGED) -->
+<p>Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.</p>
 
-<!-- (YOUR FULL TEXT STAYS EXACTLY HERE — unchanged as you already wrote it) -->
+<p>Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.</p>
+
+<p>He estado perdido por un tiempo y hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo...</p>
+
+<!-- (rest of text stays exactly the same) -->
+
+<p><b>Te amo Briana, y no puedo esperar para demostrarte cuánto te amo a través de mis acciones.</b></p>
 
 </div>
 
@@ -219,7 +268,7 @@ function openEnvelope() {
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
 
-  const emojis = ["💜","💖","🌸","✨","💐"];
+  const emojis = ["❤️","💖","💘","💞","💋","💐"];
 
   setTimeout(() => {
     for (let i = 0; i < 120; i++) {
@@ -249,7 +298,23 @@ function openEnvelope() {
 
   setTimeout(() => {
     document.body.classList.add("show");
+    createDecor();
   }, 4200);
+}
+
+/* 🌸 LETTER DECOR EMOJIS */
+function createDecor() {
+  const decor = document.getElementById("decor");
+  const emojis = ["🌸","💜","✨","💐","🌷","💫"];
+
+  for (let i = 0; i < 35; i++) {
+    const s = document.createElement("span");
+    s.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.left = Math.random() * 100 + "%";
+    s.style.top = Math.random() * 100 + "%";
+    s.style.animationDuration = (8 + Math.random()*8) + "s";
+    decor.appendChild(s);
+  }
 }
 
 </script>
