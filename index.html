@@ -7,19 +7,18 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial;
   overflow: hidden;
+  font-family: Arial;
   background: #120018;
 }
 
-/* 🌌 BACKGROUND HEARTS (BACK LAYER) */
+/* 🌌 BACKGROUND HEARTS (SAFE - NO BLOCKING) */
 .bg-heart {
   position: fixed;
-  color: rgba(255, 0, 80, 0.18);
-  font-size: 20px;
-  animation: floatUp linear infinite;
   z-index: 0;
   pointer-events: none;
+  color: rgba(255, 0, 80, 0.18);
+  animation: floatUp linear infinite;
 }
 
 @keyframes floatUp {
@@ -27,9 +26,9 @@ body {
   to { transform: translateY(-10vh); }
 }
 
-/* STAGE */
+/* CENTER STAGE */
 .stage {
-  position: absolute;
+  position: fixed;
   inset: 0;
   display: flex;
   justify-content: center;
@@ -37,22 +36,22 @@ body {
   z-index: 5;
 }
 
-/* ENVELOPE (CLICKABLE FIXED) */
+/* ✉️ ENVELOPE (CLICK FIXED) */
 .envelope {
   width: 340px;
   height: 220px;
   position: relative;
   cursor: pointer;
-  z-index: 50;
+  z-index: 10; /* IMPORTANT */
   transform-style: preserve-3d;
-  transition: 1s ease;
+  transition: transform 1.2s ease;
 }
 
 .envelope.open {
   transform: rotateX(60deg) translateY(-40px);
 }
 
-/* BASE */
+/* BODY */
 .base {
   position: absolute;
   width: 100%;
@@ -109,7 +108,7 @@ body {
   100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
 }
 
-/* TEXT ON ENVELOPE */
+/* TEXT */
 .text {
   position: absolute;
   bottom: 10px;
@@ -119,7 +118,23 @@ body {
   color: #7a4a6a;
 }
 
-/* LETTER */
+/* 💥 EMOJIS */
+.particle {
+  position: fixed;
+  font-size: 40px;
+  pointer-events: none;
+  z-index: 99999;
+  animation: fly 2s ease-out forwards;
+}
+
+@keyframes fly {
+  to {
+    transform: translate(var(--x), var(--y)) scale(2);
+    opacity: 0;
+  }
+}
+
+/* 📄 LETTER */
 .letter {
   position: fixed;
   inset: 0;
@@ -142,28 +157,12 @@ body {
   line-height: 1.6;
   font-size: 14px;
 }
-
-/* EMOJIS */
-.particle {
-  position: fixed;
-  font-size: 40px;
-  pointer-events: none;
-  z-index: 99999;
-  animation: fly 1.8s ease-out forwards;
-}
-
-@keyframes fly {
-  to {
-    transform: translate(var(--x), var(--y)) scale(2);
-    opacity: 0;
-  }
-}
 </style>
 </head>
 
 <body>
 
-<!-- 💗 BACKGROUND HEARTS (FIXED BACK LAYER) -->
+<!-- BACKGROUND HEARTS -->
 <script>
 for (let i = 0; i < 25; i++) {
   const h = document.createElement("div");
@@ -171,8 +170,8 @@ for (let i = 0; i < 25; i++) {
   h.innerText = "❤️";
 
   h.style.left = Math.random() * 100 + "vw";
-  h.style.animationDuration = (6 + Math.random() * 6) + "s";
-  h.style.fontSize = (14 + Math.random() * 20) + "px";
+  h.style.animationDuration = (5 + Math.random() * 6) + "s";
+  h.style.fontSize = (14 + Math.random() * 18) + "px";
 
   document.body.appendChild(h);
 }
@@ -185,13 +184,13 @@ for (let i = 0; i < 25; i++) {
   <div class="base"></div>
   <div class="flap"></div>
   <div class="heart"></div>
-
   <div class="text">for someone special</div>
 
 </div>
 
 </div>
 
+<!-- LETTER -->
 <div class="letter" id="letter">
 <h2>something you need to know:</h2>
 <p id="typed"></p>
@@ -199,7 +198,7 @@ for (let i = 0; i < 25; i++) {
 
 <script>
 
-/* FULL TEXT (UNCHANGED) */
+/* FULL TEXT (UNCHANGED - EXACT) */
 const text = `Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.
 
 Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.
@@ -306,9 +305,14 @@ Amo cada momento entre nosotros
 Amo cada momento que nos espera
 Amo que seas mía`;
 
-/* OPEN */
+/* OPEN FUNCTION */
 function openEnvelope() {
+
   const env = document.getElementById("env");
+
+  // FORCE CLICK RESPONSE (fix mobile blocking edge cases)
+  env.style.pointerEvents = "none";
+
   env.classList.add("open");
 
   const rect = env.getBoundingClientRect();
@@ -317,7 +321,8 @@ function openEnvelope() {
 
   const emojis = ["❤️","💖","💘","💞","💋"];
 
-  for (let i = 0; i < 70; i++) {
+  // EMOJIS BURST FROM INSIDE
+  for (let i = 0; i < 80; i++) {
     const e = document.createElement("div");
     e.className = "particle";
     e.innerText = emojis[Math.floor(Math.random()*emojis.length)];
@@ -325,21 +330,22 @@ function openEnvelope() {
     e.style.left = cx + "px";
     e.style.top = cy + "px";
 
-    e.style.setProperty("--x", (Math.random()*800-400)+"px");
-    e.style.setProperty("--y", (-Math.random()*900)+"px");
+    e.style.setProperty("--x", (Math.random()*900-450)+"px");
+    e.style.setProperty("--y", (-Math.random()*1000)+"px");
 
     document.body.appendChild(e);
 
-    setTimeout(() => e.remove(), 2000);
+    setTimeout(() => e.remove(), 2200);
   }
 
+  // SHOW LETTER
   setTimeout(() => {
     document.getElementById("letter").classList.add("show");
     typeText();
   }, 1800);
 }
 
-/* TYPE */
+/* TYPEWRITER */
 function typeText() {
   let i = 0;
   const el = document.getElementById("typed");
