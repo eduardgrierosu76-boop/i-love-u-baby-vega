@@ -8,45 +8,9 @@
 body {
   margin: 0;
   overflow: hidden;
-  font-family: Arial;
   background: #f7e9ff;
-  transition: background 2.5s ease;
-}
-
-/* 🌌 NIGHT SKY */
-body.night {
-  background: radial-gradient(circle at top, #1a0f2e, #05010a);
-}
-
-/* ⭐ STAR LAYER */
-.star {
-  position: fixed;
-  width: 2px;
-  height: 2px;
-  background: white;
-  border-radius: 50%;
-  opacity: 0.6;
-  animation: twinkle 3s infinite ease-in-out;
-  z-index: 0;
-}
-
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.6); }
-}
-
-/* 🎬 CAMERA STAGE */
-.stage {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 2s ease;
-}
-
-.zoom .stage {
-  transform: scale(1.12) rotateX(6deg);
+  font-family: Arial;
+  touch-action: manipulation;
 }
 
 /* 💗 BACKGROUND HEARTS */
@@ -55,6 +19,7 @@ body.night {
   z-index: 1;
   pointer-events: none;
   color: rgba(255, 0, 80, 0.25);
+  font-size: 18px;
   animation: floatUp linear infinite;
 }
 
@@ -63,67 +28,83 @@ body.night {
   to { transform: translateY(-10vh); }
 }
 
-/* 💓 HEARTBEAT FLASH */
-.flash {
-  position: fixed;
+/* 📦 SCENE */
+.scene {
+  position: absolute;
   inset: 0;
-  background: white;
-  opacity: 0;
-  z-index: 99999;
-  pointer-events: none;
 }
 
-.beat .flash {
-  animation: beatFlash 1.2s ease;
-}
-
-@keyframes beatFlash {
-  0% { opacity: 0; }
-  20% { opacity: 0.4; }
-  100% { opacity: 0; }
-}
-
-/* ✉️ ENVELOPE (BREATHING) */
+/* ✉️ ENVELOPE (NEW REALISTIC STYLE) */
 .envelope {
   width: 340px;
   height: 220px;
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   cursor: pointer;
-  filter: drop-shadow(0 20px 35px rgba(0,0,0,0.35));
-  animation: breathe 2.8s ease-in-out infinite;
 }
 
-@keyframes breathe {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-}
-
-/* BASE */
+/* BACK */
 .base {
   position: absolute;
   width: 100%;
   height: 100%;
   background: #fff;
-  border: 2px solid #ead7df;
+  border: 2px solid #e6d6df;
   border-radius: 8px;
+  z-index: 1;
 }
 
-/* FLAP */
+/* LOWER FLAP */
+.bottom-flap {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 55%;
+  background: #f5f5f5;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  z-index: 2;
+}
+
+/* LEFT FLAP */
+.left-flap {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: 0;
+  background: #fafafa;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  z-index: 2;
+}
+
+/* RIGHT FLAP */
+.right-flap {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  right: 0;
+  background: #fafafa;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  z-index: 2;
+}
+
+/* TOP FLAP */
 .flap {
   position: absolute;
+  top: 0;
   width: 100%;
   height: 60%;
-  top: 0;
-  background: white;
+  background: #ffffff;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top;
   transition: transform 1s ease;
-  border-bottom: 2px solid #ead7df;
   z-index: 3;
+  border-bottom: 2px solid #e6d6df;
 }
 
 .open .flap {
-  transform: rotateX(-175deg);
+  transform: rotateX(-170deg);
 }
 
 /* ❤️ HEART */
@@ -135,6 +116,7 @@ body.night {
   width: 55px;
   height: 55px;
   background: #d1003f;
+  z-index: 5;
   animation: pulse 1.2s infinite;
 }
 
@@ -148,12 +130,12 @@ body.night {
   border-radius: 50%;
 }
 
-.heart::before { top: -27px; }
-.heart::after { left: -27px; }
+.heart::before { top: -27px; left: 0; }
+.heart::after { left: -27px; top: 0; }
 
 @keyframes pulse {
   0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
-  50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.25); }
+  50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.2); }
   100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
 }
 
@@ -165,6 +147,7 @@ body.night {
   transform: translateX(-50%);
   font-size: 14px;
   color: #7a4a6a;
+  z-index: 6;
 }
 
 /* 💥 PARTICLES */
@@ -173,10 +156,10 @@ body.night {
   z-index: 9999;
   pointer-events: none;
   opacity: 0;
-  transition: transform 2.2s ease, opacity 2.5s ease;
+  transition: transform 1.6s ease, opacity 2s ease;
 }
 
-/* 📄 LETTER (PAPER DEPTH + CURL CORNERS) */
+/* 📄 LETTER (REAL PAPER STYLE) */
 .letter {
   position: fixed;
   inset: 0;
@@ -184,39 +167,40 @@ body.night {
   padding: 28px;
 
   opacity: 0;
-  transform: translateY(40px) scale(0.95);
-  transition: 1.5s ease;
+  transform: scale(0.9);
+  transition: 1s ease;
 
   z-index: 100000;
 
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
-  box-shadow: 0 -20px 80px rgba(0,0,0,0.4);
+  pointer-events: none;
 
-  /* paper curl illusion */
-  border-radius: 12px;
-  background-image:
-    linear-gradient(to bottom right, rgba(0,0,0,0.03), transparent);
+  box-shadow: inset 0 0 0 2px #ead7df;
 }
 
 .show .letter {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: scale(1);
+  pointer-events: auto;
 }
 
-/* typing effect */
-.type {
-  white-space: pre-wrap;
+.letter h2 {
+  margin-bottom: 20px;
+}
+
+.letter p {
+  line-height: 1.7;
+  margin-bottom: 14px;
+  font-size: 15px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="flash"></div>
-
-<!-- 💗 HEARTS -->
+<!-- 💗 BACKGROUND HEARTS -->
 <script>
 for (let i = 0; i < 18; i++) {
   const h = document.createElement("div");
@@ -227,57 +211,140 @@ for (let i = 0; i < 18; i++) {
   h.style.fontSize = (14 + Math.random() * 18) + "px";
   document.body.appendChild(h);
 }
-
-/* ⭐ STARS */
-for (let i = 0; i < 40; i++) {
-  const s = document.createElement("div");
-  s.className = "star";
-  s.style.left = Math.random()*100 + "vw";
-  s.style.top = Math.random()*100 + "vh";
-  s.style.animationDuration = (2 + Math.random()*3) + "s";
-  document.body.appendChild(s);
-}
 </script>
 
-<div class="stage">
-
+<!-- ✉️ ENVELOPE -->
 <div class="envelope" onclick="openEnvelope()">
   <div class="base"></div>
+  <div class="bottom-flap"></div>
+  <div class="left-flap"></div>
+  <div class="right-flap"></div>
   <div class="flap"></div>
+
   <div class="heart"></div>
   <div class="text">for someone special</div>
 </div>
 
-</div>
+<!-- 📄 LETTER (YOUR TEXT UNCHANGED) -->
+<div class="letter">
 
-<!-- 📄 LETTER -->
-<div class="letter" id="letter">
 <h2>something you need to know:</h2>
-<p id="typeText"></p>
+
+<p>Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.</p>
+
+<p>Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.</p>
+
+<p>He estado perdido por un tiempo y hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo, y sin importar cómo se vea mi futuro, quiero que sea contigo. Quiero despertarme cada día contigo en mis brazos, quiero estar ahí para ti cuando más me necesites, quiero saber todo sobre ti, quiero hacer todo contigo, quiero envejecer contigo, porque te amo.</p>
+
+<p>Y tal vez no lo demuestre lo suficiente, pero me importas, y siempre quiero que sepas que no importa lo que pase, siempre voy a estar aquí para ti. Cuando solo veas oscuridad, siempre voy a estar aquí para mostrarte la luz.</p>
+
+<p>Debería haber hecho esta carta hace mucho tiempo, pero nunca tuve suficientes palabras para describir lo mucho que significas para mí, y aún no las tengo. Pero eres perfecta, mi amor. Sueño contigo cada noche. Si Dios creó la perfección, eres tú.</p>
+
+<p>Y aunque no tenga suficientes palabras para decir cuánto te amo, aquí tienes 100 de las millones de cosas que amo de ti:</p>
+
+<p>
+Amo cada vez que te ríes<br>
+Amo cada vez que sonríes<br>
+Amo tus grandes y hermosos ojos<br>
+Amo tus labios<br>
+Amo tu voz<br>
+Amo cuando hablas en español<br>
+Amo lo suave que eres<br>
+Amo lo honesta que eres<br>
+Amo cómo bromeas conmigo<br>
+Amo cómo me haces bromas<br>
+Amo cómo me escribes cada mañana<br>
+Amo cuando me llamas baby<br>
+Amo cuando dices que me amas<br>
+Amo lo inteligente que eres<br>
+Amo cómo siempre intentas hacerme una mejor persona<br>
+Amo cada vez que intentas consolarme<br>
+Amo cómo me entiendes<br>
+Amo cuando te abres conmigo<br>
+Amo cuando estás emocionada<br>
+Amo cuando estás tranquila<br>
+Amo cuando tienes sueño<br>
+Amo cuando me cuentas tu día<br>
+Amo que hayas llegado a mi vida<br>
+Amo cómo te acuerdas de mí<br>
+Amo la forma en que me respondes<br>
+Amo cómo eres tú misma conmigo<br>
+Amo la forma en que me animas<br>
+Amo lo determinada que eres<br>
+Amo lo inteligente que eres<br>
+Amo cómo crees en mí<br>
+Amo cada vez que dices “noooooo”<br>
+Amo tu cara<br>
+Amo tu cuerpo<br>
+Amo los TikToks que me mandas<br>
+Amo las fotos que me das<br>
+Amo los videos que me das<br>
+Amo los chistes que haces<br>
+Amo que te rías de mis chistes<br>
+Amo que pueda hablar contigo de todo<br>
+Amo que pueda ser honesto contigo<br>
+Amo que pueda abrirme contigo<br>
+Amo cómo reaccionas a mis cumplidos<br>
+Amo cómo haces mi día mejor<br>
+Amo cómo todo desaparece cuando hablo contigo<br>
+Amo cómo me haces sentir tranquilo<br>
+Amo cómo me haces sentir amado<br>
+Amo cómo me haces reír<br>
+Amo cómo me hiciste sentir especial<br>
+Amo que existas en mi vida<br>
+Amo tu forma de ser tú<br>
+Amo cómo empezamos cada conversación<br>
+Amo cada llamada que hacemos<br>
+Amo cada mensaje que nos mandamos<br>
+Amo cada foto que compartimos<br>
+Amo lo cariñosa que eres<br>
+Amo cómo cuidas a tus hermanos<br>
+Amo que sepas cocinar<br>
+Amo lo productiva que eres cada día<br>
+Amo lo especial que me haces sentir<br>
+Amo lo especial que eres<br>
+Amo tu cabello<br>
+Amo tu nariz<br>
+Amo tus mejillas<br>
+Amo lo alta que eres<br>
+Amo tus piernas<br>
+Amo tu corazón<br>
+Amo el color de tus ojos<br>
+Amo cómo manejas el estrés<br>
+Amo tu sonrisa ladeada<br>
+Amo cada expresión tuya<br>
+Amo cuando estás pensando mucho<br>
+Amo tu postura<br>
+Amo tu ropa<br>
+Amo la forma en que reaccionas a las cosas<br>
+Amo cuando cambia tu ánimo<br>
+Amo que seas de Bolivia<br>
+Amo cuando hablas inglés<br>
+Amo tu acento<br>
+Amo lo buena persona que eres<br>
+Amo tu gusto musical<br>
+Amo tu gusto por la comida<br>
+Amo tu gusto por los libros<br>
+Amo tus hobbies<br>
+Amo tu gusto por películas<br>
+Amo tu gusto por series<br>
+Amo lo pura que eres<br>
+Amo lo inocente que eres<br>
+Amo lo traviesa que eres<br>
+Amo cada momento que pasamos hablando<br>
+Amo cada juego que hemos jugado<br>
+Amo cada momento entre nosotros<br>
+Amo cada momento que nos espera<br>
+Amo que seas mía
+</p>
+
+<p><b>Te amo Briana, y no puedo esperar para demostrarte cuánto te amo a través de mis acciones.</b></p>
+
 </div>
 
 <script>
 
-/* YOUR FULL TEXT (UNCHANGED) */
-const fullText = `Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.
-
-Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.
-
-He estado perdido por un tiempo y hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo, y sin importar cómo se vea mi futuro, quiero que sea contigo. Quiero despertarme cada día contigo en mis brazos, quiero estar ahí para ti cuando más me necesites, quiero saber todo sobre ti, quiero hacer todo contigo, quiero envejecer contigo, porque te amo.
-
-Y tal vez no lo demuestre lo suficiente, pero me importas, y siempre quiero que sepas que no importa lo que pase, siempre voy a estar aquí para ti. Cuando solo veas oscuridad, siempre voy a estar aquí para mostrarte la luz.
-
-Debería haber hecho esta carta hace mucho tiempo, pero nunca tuve suficientes palabras para describir lo mucho que significas para mí, y aún no las tengo. Pero eres perfecta, mi amor. Sueño contigo cada noche. Si Dios creó la perfección, eres tú.
-
-Y aunque no tenga suficientes palabras para decir cuánto te amo, aquí tienes 100 de las millones de cosas que amo de ti:`;
-
-/* CINEMATIC START */
 function openEnvelope() {
-
-  navigator.vibrate?.([200, 100, 200]); // 💓 vibration
-
-  document.body.classList.add("beat","zoom","night");
-
   const envelope = document.querySelector(".envelope");
   envelope.classList.add("open");
 
@@ -285,11 +352,10 @@ function openEnvelope() {
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
 
-  const emojis = ["❤️","💖","💘","💞","💋"];
+  const emojis = ["❤️","💖","💘","💞","💋","💐"];
 
   setTimeout(() => {
-
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < 120; i++) {
       const p = document.createElement("div");
       p.className = "particle";
       p.innerText = emojis[Math.floor(Math.random()*emojis.length)];
@@ -298,11 +364,11 @@ function openEnvelope() {
       p.style.left = cx + "px";
       p.style.top = cy + "px";
 
-      const size = 120 + Math.random() * 200;
+      const size = 120 + Math.random() * 260;
       p.style.fontSize = size + "px";
 
       const angle = Math.random() * Math.PI * 2;
-      const dist = 600 + Math.random() * 900;
+      const dist = 500 + Math.random() * 1000;
 
       const dx = Math.cos(angle) * dist;
       const dy = Math.sin(angle) * dist;
@@ -310,32 +376,13 @@ function openEnvelope() {
       setTimeout(() => {
         p.style.opacity = "1";
         p.style.transform = `translate(${dx}px, ${dy}px) scale(2)`;
-      }, 60);
+      }, 50);
     }
-
   }, 900);
 
   setTimeout(() => {
-    envelope.style.opacity = "0";
     document.body.classList.add("show");
-    typeWriter(fullText);
   }, 4200);
-}
-
-/* ⌨️ TYPING EFFECT */
-function typeWriter(text) {
-  const el = document.getElementById("typeText");
-  let i = 0;
-
-  function type() {
-    if (i < text.length) {
-      el.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(type, 8);
-    }
-  }
-
-  type();
 }
 
 </script>
