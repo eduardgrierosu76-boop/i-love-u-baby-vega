@@ -22,6 +22,20 @@ body {
   z-index: 0;
 }
 
+/* 💗 HEARTS BACKGROUND */
+.bg-heart {
+  position: fixed;
+  z-index: 1;
+  pointer-events: none;
+  color: rgba(255, 0, 80, 0.25);
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(100vh); }
+  to { transform: translateY(-10vh); }
+}
+
 /* STAGE */
 .stage {
   position: absolute;
@@ -29,6 +43,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 5;
 }
 
 /* ENVELOPE */
@@ -37,9 +52,9 @@ body {
   height: 220px;
   position: relative;
   cursor: pointer;
+  z-index: 10;
 }
 
-/* BASE */
 .base {
   position: absolute;
   width: 100%;
@@ -49,7 +64,6 @@ body {
   box-shadow: 0 30px 80px rgba(0,0,0,0.4);
 }
 
-/* FLAPS */
 .flap {
   position: absolute;
   width: 100%;
@@ -58,7 +72,7 @@ body {
   background: #fff;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top;
-  transition: 1.2s;
+  transition: 1.2s ease;
 }
 
 .left-flap, .right-flap, .bottom-flap {
@@ -128,7 +142,7 @@ body {
   color: #7a4a6a;
 }
 
-/* LETTER FIX (IMPORTANT) */
+/* LETTER */
 .letter {
   position: fixed;
   inset: 0;
@@ -150,7 +164,6 @@ body {
   transform: translateY(0);
 }
 
-/* TEXT INSIDE LETTER */
 #typed {
   white-space: pre-wrap;
   line-height: 1.6;
@@ -162,6 +175,21 @@ body {
 <body>
 
 <div class="galaxy"></div>
+
+<!-- 💗 HEARTS -->
+<script>
+for (let i = 0; i < 25; i++) {
+  const h = document.createElement("div");
+  h.className = "bg-heart";
+  h.innerText = "❤️";
+
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = (14 + Math.random() * 20) + "px";
+  h.style.animationDuration = (6 + Math.random() * 6) + "s";
+
+  document.body.appendChild(h);
+}
+</script>
 
 <div class="stage">
 
@@ -185,7 +213,7 @@ body {
 
 <script>
 
-/* YOUR FULL TEXT (UNCHANGED) */
+/* ✅ FULL TEXT RESTORED EXACTLY */
 const text = `Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.
 
 Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.
@@ -295,11 +323,10 @@ Amo que seas mía`;
 /* OPEN */
 function openEnvelope() {
   document.getElementById("env").style.opacity = "0";
-
   setTimeout(() => {
     document.getElementById("letter").classList.add("show");
     typeText();
-  }, 800);
+  }, 700);
 }
 
 /* TYPE */
