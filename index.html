@@ -11,8 +11,8 @@ body {
   font-family: Arial;
   touch-action: manipulation;
 
-  /* 🌌 PURPLE BACKGROUND WITH DEPTH */
-  background: radial-gradient(circle at top, #3b1b5a, #120016 70%);
+  /* 💜 FINAL PURPLE BACKGROUND */
+  background: radial-gradient(circle at top, #4b1b6b 0%, #1a0026 55%, #0b0010 100%);
 }
 
 /* 💗 BACKGROUND HEARTS */
@@ -20,7 +20,7 @@ body {
   position: fixed;
   z-index: 1;
   pointer-events: none;
-  color: rgba(255, 180, 220, 0.25);
+  color: rgba(255, 170, 255, 0.25);
   font-size: 18px;
   animation: floatUp linear infinite;
 }
@@ -30,13 +30,7 @@ body {
   to { transform: translateY(-10vh); }
 }
 
-/* 📦 SCENE */
-.scene {
-  position: absolute;
-  inset: 0;
-}
-
-/* ✉️ ENVELOPE AREA */
+/* ✉️ ENVELOPE */
 .envelope {
   width: 340px;
   height: 220px;
@@ -45,7 +39,6 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   cursor: pointer;
-  filter: drop-shadow(0 10px 25px rgba(0,0,0,0.5));
 }
 
 /* BACK */
@@ -59,55 +52,9 @@ body {
   z-index: 1;
 }
 
-/* LOWER FLAP */
-.bottom-flap {
+/* FLAPS */
+.bottom-flap, .left-flap, .right-flap, .flap {
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 55%;
-  background: #f5f5f5;
-  clip-path: polygon(0 0, 50% 100%, 100% 0);
-  z-index: 2;
-}
-
-/* LEFT FLAP */
-.left-flap {
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  left: 0;
-  background: #fafafa;
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-  z-index: 2;
-}
-
-/* RIGHT FLAP */
-.right-flap {
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  right: 0;
-  background: #fafafa;
-  clip-path: polygon(100% 0, 0 50%, 100% 100%);
-  z-index: 2;
-}
-
-/* TOP FLAP */
-.flap {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 60%;
-  background: #ffffff;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: top;
-  transition: transform 1s ease;
-  z-index: 3;
-  border-bottom: 2px solid #e6d6df;
-}
-
-.open .flap {
-  transform: rotateX(-170deg);
 }
 
 /* ❤️ HEART */
@@ -162,49 +109,54 @@ body {
   transition: transform 1.6s ease, opacity 2s ease;
 }
 
-/* 📄 LETTER */
+/* 💌 LETTER (FIXED FINAL LOOK) */
 .letter {
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, #fffaf5, #f3e8ff);
-  padding: 28px;
-  z-index: 100000;
 
+  /* 💜 soft romantic paper */
+  background: radial-gradient(circle at top left, #ffe9f6 0%, #f3e6ff 50%, #e9dcff 100%);
+
+  padding: 28px;
   opacity: 0;
   transform: scale(0.9);
   transition: 1s ease;
 
+  z-index: 100000;
+
   overflow-y: auto;
   pointer-events: none;
 
-  box-shadow: inset 0 0 40px rgba(0,0,0,0.2);
+  box-shadow: inset 0 0 70px rgba(120, 0, 180, 0.18);
 }
 
-/* SHOW LETTER */
+/* 🌸 floating decorative layer (behind text only) */
+.letter::before {
+  content: "🌸 💜 ✨ 🌸 💜 ✨ 🌸 💜 ✨ 🌸 💜 ✨ 🌸 💜 ✨";
+  position: absolute;
+  inset: 0;
+  font-size: 30px;
+  opacity: 0.07;
+  line-height: 2.3;
+  white-space: pre-wrap;
+  pointer-events: none;
+}
+
 .show .letter {
   opacity: 1;
   transform: scale(1);
   pointer-events: auto;
 }
 
-/* 💌 LETTER BACKGROUND EMOJIS (SAFE, BEHIND TEXT) */
-.letter::before {
-  content: "💖 💐 💕 🌸 💌 💖 🌷 💕 💐 🌸";
-  position: absolute;
-  inset: 0;
-  font-size: 40px;
-  opacity: 0.08;
-  white-space: pre-wrap;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* TEXT ABOVE EMOJIS */
 .letter h2,
 .letter p {
   position: relative;
   z-index: 2;
+}
+
+.letter p {
   line-height: 1.7;
+  margin-bottom: 14px;
   font-size: 15px;
 }
 
@@ -218,7 +170,7 @@ body {
 for (let i = 0; i < 18; i++) {
   const h = document.createElement("div");
   h.className = "bg-heart";
-  h.innerText = "❤️";
+  h.innerText = "💜";
   h.style.left = Math.random() * 100 + "vw";
   h.style.animationDuration = (6 + Math.random() * 6) + "s";
   h.style.fontSize = (14 + Math.random() * 18) + "px";
@@ -238,23 +190,22 @@ for (let i = 0; i < 18; i++) {
   <div class="text">for someone special</div>
 </div>
 
-<!-- 📄 LETTER -->
+<!-- 📄 LETTER (UNCHANGED TEXT) -->
 <div class="letter">
 
 <h2>something you need to know:</h2>
 
-<p>
-Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.
+<p>Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.</p>
 
-Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.
+<p>Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.</p>
 
-He estado perdido por un tiempo y hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo, y sin importar cómo se vea mi futuro, quiero que sea contigo. Quiero despertarme cada día contigo en mis brazos, quiero estar ahí para ti cuando más me necesites, quiero saber todo sobre ti, quiero hacer todo contigo, quiero envejecer contigo, porque te amo.
+<p>He estado perdido por un tiempo y hemos hablado durante tanto tiempo y aún así no sé qué quiero hacer con mi futuro, pero sí sé una cosa con seguridad: te amo, y sin importar cómo se vea mi futuro, quiero que sea contigo. Quiero despertarme cada día contigo en mis brazos, quiero estar ahí para ti cuando más me necesites, quiero saber todo sobre ti, quiero hacer todo contigo, quiero envejecer contigo, porque te amo.</p>
 
-Y tal vez no lo demuestre lo suficiente, pero me importas, y siempre quiero que sepas que no importa lo que pase, siempre voy a estar aquí para ti. Cuando solo veas oscuridad, siempre voy a estar aquí para mostrarte la luz.
+<p>Y tal vez no lo demuestre lo suficiente, pero me importas, y siempre quiero que sepas que no importa lo que pase, siempre voy a estar aquí para ti. Cuando solo veas oscuridad, siempre voy a estar aquí para mostrarte la luz.</p>
 
-Debería haber hecho esta carta hace mucho tiempo, pero nunca tuve suficientes palabras para describir lo mucho que significas para mí, y aún no las tengo. Pero eres perfecta, mi amor. Sueño contigo cada noche. Si Dios creó la perfección, eres tú.
+<p>Debería haber hecho esta carta hace mucho tiempo, pero nunca tuve suficientes palabras para describir lo mucho que significas para mí, y aún no las tengo. Pero eres perfecta, mi amor. Sueño contigo cada noche. Si Dios creó la perfección, eres tú.</p>
 
-Y aunque no tenga suficientes palabras para decir cuánto te amo, aquí tienes 100 de las millones de cosas que amo de ti:
+<p>Y aunque no tenga suficientes palabras para decir cuánto te amo, aquí tienes 100 de las millones de cosas que amo de ti:</p>
 
 <p>
 Amo cada vez que te ríes<br>
@@ -352,18 +303,51 @@ Amo cada momento que nos espera<br>
 Amo que seas mía
 </p>
 
+<p><b>Te amo Briana, y no puedo esperar para demostrarte cuánto te amo a través de mis acciones.</b></p>
+
 </div>
 
 <script>
-
 function openEnvelope() {
-  document.querySelector(".envelope").classList.add("open");
+  const envelope = document.querySelector(".envelope");
+  envelope.classList.add("open");
+
+  const rect = envelope.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+
+  const emojis = ["💜","💖","🌸","✨","💐"];
+
+  setTimeout(() => {
+    for (let i = 0; i < 120; i++) {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+      document.body.appendChild(p);
+
+      p.style.left = cx + "px";
+      p.style.top = cy + "px";
+
+      const size = 120 + Math.random() * 260;
+      p.style.fontSize = size + "px";
+
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 500 + Math.random() * 1000;
+
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+
+      setTimeout(() => {
+        p.style.opacity = "1";
+        p.style.transform = `translate(${dx}px, ${dy}px) scale(2)`;
+      }, 50);
+    }
+  }, 900);
 
   setTimeout(() => {
     document.body.classList.add("show");
-  }, 2000);
+  }, 4200);
 }
-
 </script>
 
 </body>
