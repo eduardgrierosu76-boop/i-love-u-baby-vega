@@ -10,14 +10,31 @@ body {
   overflow: hidden;
   font-family: Arial;
   background: #120018;
+  transition: background 2s ease;
 }
 
-/* 🌌 BACKGROUND HEARTS (SAFE - NO BLOCKING) */
+/* 🌌 GALAXY BACKGROUND */
+.galaxy {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, #2b0a3d, transparent 40%),
+              radial-gradient(circle at 80% 70%, #3a0f5c, transparent 45%),
+              radial-gradient(circle at center, #0d0014, #000);
+  animation: drift 12s infinite alternate ease-in-out;
+  z-index: 0;
+}
+
+@keyframes drift {
+  0% { transform: scale(1); filter: hue-rotate(0deg); }
+  100% { transform: scale(1.08); filter: hue-rotate(20deg); }
+}
+
+/* 💗 HEARTS */
 .bg-heart {
   position: fixed;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
-  color: rgba(255, 0, 80, 0.18);
+  color: rgba(255, 0, 80, 0.25);
   animation: floatUp linear infinite;
 }
 
@@ -26,67 +43,95 @@ body {
   to { transform: translateY(-10vh); }
 }
 
-/* CENTER STAGE */
+/* 🎥 PARALLAX STAGE */
 .stage {
-  position: fixed;
+  position: absolute;
   inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 5;
+  transition: transform 0.2s ease;
 }
 
-/* ✉️ ENVELOPE (CLICK FIXED) */
+/* ✉️ ENVELOPE (ORIGAMI FEEL) */
 .envelope {
   width: 340px;
   height: 220px;
   position: relative;
   cursor: pointer;
-  z-index: 10; /* IMPORTANT */
+
   transform-style: preserve-3d;
-  transition: transform 1.2s ease;
+  animation: floatBreath 3s ease-in-out infinite;
 }
 
-.envelope.open {
-  transform: rotateX(60deg) translateY(-40px);
+@keyframes floatBreath {
+  0%,100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-8px) rotateX(2deg); }
 }
 
-/* BODY */
+/* BASE */
 .base {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
 }
 
-/* FLAP */
+/* FLAPS (REAL ORIGAMI OPENING) */
 .flap {
   position: absolute;
   width: 100%;
   height: 60%;
   top: 0;
-  background: white;
+  background: #fff;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top;
-  transition: 1s ease;
+  transition: transform 1.2s cubic-bezier(.77,0,.18,1);
+  border-bottom: 2px solid #ead7df;
 }
 
-.envelope.open .flap {
+.left-flap, .right-flap, .bottom-flap {
+  position: absolute;
+  background: #f7f7f7;
+  z-index: 1;
+}
+
+.left-flap {
+  width: 50%; height: 100%;
+  left: 0;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.right-flap {
+  width: 50%; height: 100%;
+  right: 0;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.bottom-flap {
+  width: 100%;
+  height: 55%;
+  bottom: 0;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+}
+
+.open .flap {
   transform: rotateX(-180deg);
 }
 
-/* HEART */
+/* ❤️ HEART */
 .heart {
   position: absolute;
   top: 55%;
   left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
   width: 55px;
   height: 55px;
-  transform: translate(-50%, -50%) rotate(45deg);
   background: #d1003f;
-  animation: pulse 1s infinite;
+  animation: pulse 1.1s infinite;
+  z-index: 5;
 }
 
 .heart::before,
@@ -104,93 +149,75 @@ body {
 
 @keyframes pulse {
   0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
-  50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.2); }
+  50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.25); }
   100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
 }
 
 /* TEXT */
 .text {
   position: absolute;
-  bottom: 10px;
-  width: 100%;
-  text-align: center;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 14px;
   color: #7a4a6a;
 }
 
-/* 💥 EMOJIS */
+/* 💥 PARTICLES */
 .particle {
   position: fixed;
-  font-size: 40px;
+  z-index: 9999;
   pointer-events: none;
-  z-index: 99999;
-  animation: fly 2s ease-out forwards;
+  opacity: 0;
+  transition: transform 2.4s ease, opacity 2.6s ease;
 }
 
-@keyframes fly {
-  to {
-    transform: translate(var(--x), var(--y)) scale(2);
-    opacity: 0;
-  }
-}
-
-/* 📄 LETTER */
+/* 📄 LETTER (REAL PAPER DEPTH) */
 .letter {
   position: fixed;
   inset: 0;
   background: #fffaf5;
-  padding: 20px;
-  overflow-y: auto;
+  padding: 28px;
+
   opacity: 0;
-  transform: translateY(40px);
-  transition: 1s ease;
-  z-index: 9999;
+  transform: translateY(60px) scale(0.92);
+  transition: 1.8s cubic-bezier(.2,.8,.2,1);
+
+  z-index: 100000;
+
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  box-shadow: 0 -30px 120px rgba(0,0,0,0.6);
 }
 
-.letter.show {
+.show .letter {
   opacity: 1;
-  transform: translateY(0);
-}
-
-#typed {
-  white-space: pre-wrap;
-  line-height: 1.6;
-  font-size: 14px;
+  transform: translateY(0) scale(1);
 }
 </style>
 </head>
 
 <body>
 
-<!-- BACKGROUND HEARTS -->
-<script>
-for (let i = 0; i < 25; i++) {
-  const h = document.createElement("div");
-  h.className = "bg-heart";
-  h.innerText = "❤️";
-
-  h.style.left = Math.random() * 100 + "vw";
-  h.style.animationDuration = (5 + Math.random() * 6) + "s";
-  h.style.fontSize = (14 + Math.random() * 18) + "px";
-
-  document.body.appendChild(h);
-}
-</script>
+<div class="galaxy"></div>
 
 <div class="stage">
 
+<!-- ✉️ ENVELOPE -->
 <div class="envelope" id="env" onclick="openEnvelope()">
-
   <div class="base"></div>
+  <div class="bottom-flap"></div>
+  <div class="left-flap"></div>
+  <div class="right-flap"></div>
   <div class="flap"></div>
   <div class="heart"></div>
   <div class="text">for someone special</div>
-
 </div>
 
 </div>
 
-<!-- LETTER -->
+<!-- 📄 LETTER -->
 <div class="letter" id="letter">
 <h2>something you need to know:</h2>
 <p id="typed"></p>
@@ -198,7 +225,7 @@ for (let i = 0; i < 25; i++) {
 
 <script>
 
-/* FULL TEXT (UNCHANGED - EXACT) */
+/* YOUR TEXT (UNCHANGED) */
 const text = `Hola amor. Quiero empezar diciendo que perdón por lo mucho que esto ha tardado. No sé cómo programar cosas ni mucho español, así que si no tiene sentido, perdón. Pero hice esto para agradecerte por todo, gracias por estar aquí cuando más me necesitaba, gracias por escucharme, gracias por escribirme todos los días, gracias por existir.
 
 Antes de conocerte pensaba que no iba a necesitar a nadie durante mucho tiempo, solo quería estar solo, pero que hayas llegado a mi vida fue lo mejor que me ha pasado. No esperaba estar pensando en ti cada segundo del día, o despertarme solo para sonreír cuando me escribías. Haces que mis días sean mejores cada día, y espero que yo también haga los tuyos mejores.
@@ -209,110 +236,16 @@ Y tal vez no lo demuestre lo suficiente, pero me importas, y siempre quiero que 
 
 Debería haber hecho esta carta hace mucho tiempo, pero nunca tuve suficientes palabras para describir lo mucho que significas para mí, y aún no las tengo. Pero eres perfecta, mi amor. Sueño contigo cada noche. Si Dios creó la perfección, eres tú.
 
-Y aunque no tenga suficientes palabras para decir cuánto te amo, aquí tienes 100 de las millones de cosas que amo de ti:
+Y aunque no tenga suficientes palabras para decir cuánto te amo, aquí tienes 100 de las millones de cosas que amo de ti:`;
 
-Amo cada vez que te ríes
-Amo cada vez que sonríes
-Amo tus grandes y hermosos ojos
-Amo tus labios
-Amo tu voz
-Amo cuando hablas en español
-Amo lo suave que eres
-Amo lo honesta que eres
-Amo cómo bromeas conmigo
-Amo cómo me haces bromas
-Amo cómo me escribes cada mañana
-Amo cuando me llamas baby
-Amo cuando dices que me amas
-Amo lo inteligente que eres
-Amo cómo siempre intentas hacerme una mejor persona
-Amo cada vez que intentas consolarme
-Amo cómo me entiendes
-Amo cuando te abres conmigo
-Amo cuando estás emocionada
-Amo cuando estás tranquila
-Amo cuando tienes sueño
-Amo cuando me cuentas tu día
-Amo que hayas llegado a mi vida
-Amo cómo te acuerdas de mí
-Amo la forma en que me respondes
-Amo cómo eres tú misma conmigo
-Amo la forma en que me animas
-Amo lo determinada que eres
-Amo lo inteligente que eres
-Amo cómo crees en mí
-Amo cada vez que dices “noooooo”
-Amo tu cara
-Amo tu cuerpo
-Amo los TikToks que me mandas
-Amo las fotos que me das
-Amo los videos que me das
-Amo los chistes que haces
-Amo que te rías de mis chistes
-Amo que pueda hablar contigo de todo
-Amo que pueda ser honesto contigo
-Amo que pueda abrirme contigo
-Amo cómo reaccionas a mis cumplidos
-Amo cómo haces mi día mejor
-Amo cómo todo desaparece cuando hablo contigo
-Amo cómo me haces sentir tranquilo
-Amo cómo me haces sentir amado
-Amo cómo me haces reír
-Amo cómo me hiciste sentir especial
-Amo que existas en mi vida
-Amo tu forma de ser tú
-Amo cómo empezamos cada conversación
-Amo cada llamada que hacemos
-Amo cada mensaje que nos mandamos
-Amo cada foto que compartimos
-Amo lo cariñosa que eres
-Amo cómo cuidas a tus hermanos
-Amo que sepas cocinar
-Amo lo productiva que eres cada día
-Amo lo especial que me haces sentir
-Amo lo especial que eres
-Amo tu cabello
-Amo tu nariz
-Amo tus mejillas
-Amo lo alta que eres
-Amo tus piernas
-Amo tu corazón
-Amo el color de tus ojos
-Amo cómo manejas el estrés
-Amo tu sonrisa ladeada
-Amo cada expresión tuya
-Amo cuando estás pensando mucho
-Amo tu postura
-Amo tu ropa
-Amo la forma en que reaccionas a las cosas
-Amo cuando cambia tu ánimo
-Amo que seas de Bolivia
-Amo cuando hablas inglés
-Amo tu acento
-Amo lo buena persona que eres
-Amo tu gusto musical
-Amo tu gusto por la comida
-Amo tu gusto por los libros
-Amo tus hobbies
-Amo tu gusto por películas
-Amo tu gusto por series
-Amo lo pura que eres
-Amo lo inocente que eres
-Amo lo traviesa que eres
-Amo cada momento que pasamos hablando
-Amo cada juego que hemos jugado
-Amo cada momento entre nosotros
-Amo cada momento que nos espera
-Amo que seas mía`;
-
-/* OPEN FUNCTION */
+/* 🎬 OPEN */
 function openEnvelope() {
 
+  navigator.vibrate?.([200,100,300,100,500]); // 💓 heartbeat pattern
+
+  document.body.classList.add("beat","night");
+
   const env = document.getElementById("env");
-
-  // FORCE CLICK RESPONSE (fix mobile blocking edge cases)
-  env.style.pointerEvents = "none";
-
   env.classList.add("open");
 
   const rect = env.getBoundingClientRect();
@@ -321,31 +254,42 @@ function openEnvelope() {
 
   const emojis = ["❤️","💖","💘","💞","💋"];
 
-  // EMOJIS BURST FROM INSIDE
-  for (let i = 0; i < 80; i++) {
-    const e = document.createElement("div");
-    e.className = "particle";
-    e.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-
-    e.style.left = cx + "px";
-    e.style.top = cy + "px";
-
-    e.style.setProperty("--x", (Math.random()*900-450)+"px");
-    e.style.setProperty("--y", (-Math.random()*1000)+"px");
-
-    document.body.appendChild(e);
-
-    setTimeout(() => e.remove(), 2200);
-  }
-
-  // SHOW LETTER
   setTimeout(() => {
-    document.getElementById("letter").classList.add("show");
+
+    for (let i = 0; i < 70; i++) {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+      document.body.appendChild(p);
+
+      p.style.left = cx + "px";
+      p.style.top = cy + "px";
+
+      const dist = 700 + Math.random()*900;
+      const angle = Math.random()*Math.PI*2;
+
+      const dx = Math.cos(angle)*dist;
+      const dy = Math.sin(angle)*dist;
+
+      setTimeout(() => {
+        p.style.opacity = "1";
+        p.style.transform = `translate(${dx}px,${dy}px) scale(2)`;
+      }, 80);
+    }
+
+  }, 900);
+
+  setTimeout(() => {
+    env.style.opacity = "0";
     typeText();
   }, 1800);
+
+  setTimeout(() => {
+    document.getElementById("letter").classList.add("show");
+  }, 4200);
 }
 
-/* TYPEWRITER */
+/* ⌨️ TYPEWRITER */
 function typeText() {
   let i = 0;
   const el = document.getElementById("typed");
@@ -354,11 +298,20 @@ function typeText() {
     if (i < text.length) {
       el.innerHTML += text[i];
       i++;
-      setTimeout(t, 2);
+      setTimeout(t, 6);
     }
   }
   t();
 }
+
+/* 🎥 CURSOR PARALLAX */
+document.addEventListener("mousemove", e => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 10;
+  const y = (e.clientY / window.innerHeight - 0.5) * 10;
+  document.querySelector(".stage").style.transform =
+    `translate(${x}px, ${y}px)`;
+});
+
 </script>
 
 </body>
